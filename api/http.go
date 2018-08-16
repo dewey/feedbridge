@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -16,6 +17,7 @@ func NewHandler(s service) *chi.Mux {
 
 	// Public routes
 	r.Group(func(r chi.Router) {
+		r.Get("/list", getPluginListHandler(s))
 		r.Get("/{plugin}/{format}", getFeedHandler(s))
 	})
 
@@ -25,7 +27,6 @@ func NewHandler(s service) *chi.Mux {
 // getUserHandler returns information about a given existing user
 func getFeedHandler(s service) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("hit route")
 		plugin := chi.URLParam(r, "plugin")
 		format := chi.URLParam(r, "format")
 
@@ -37,11 +38,29 @@ func getFeedHandler(s service) http.HandlerFunc {
 		if format == "" {
 			format = "rss"
 		}
-		s, err := s.Storage.Get(fmt.Sprintf("%s_%s", format, plugin))
+		s, err := s.StorageRepository.Get(fmt.Sprintf("%s_%s", format, plugin))
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(s))
+	}
+}
+
+// getPluginListHandler returns a list of all available plugins
+func getPluginListHandler(s service) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		p := s.PluginRepository.All()
+		var plugins []string
+		for _, p := range p {
+			plugins = append(plugins, p.String())
+		}
+		b, err := json.Marshal(plugins)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+		w.Write(b)
 	}
 }

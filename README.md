@@ -6,7 +6,13 @@ There are a bunch of web apps doing something similar, some of them you can even
 
 ## API
 
-`GET /feed/{plugin}/{format}`
+**GET /feed/list**
+
+Returns a list of available plugins.
+
+**GET /feed/{plugin}/{format}**
+
+Returns the feed based on a given plugin and output format.
 
 - `plugin`: The name of the plugin as returned by `String()`
 - `format`: The format the feed should be returned in, can be `rss`, `atom` or `json`. By default it's RSS.

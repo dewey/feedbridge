@@ -1,20 +1,28 @@
 package api
 
-import "github.com/dewey/feedbridge/store"
+import (
+	"github.com/dewey/feedbridge/repository"
+	"github.com/dewey/feedbridge/store"
+)
 
 // Service provides access to the serving functions
 type Service interface {
-	// ServeFile serves a feed based on the plugin
+	// ServeFeed serves a feed based on the plugin and format
 	ServeFeed(format string, plugin string) (string, error)
+
+	// ListFeeds lists all available feed plugins
+	ListFeeds() []string
 }
 
 type service struct {
-	Storage *store.MemRepo
+	StorageRepository *store.MemRepo
+	PluginRepository  *repository.MemRepo
 }
 
 // NewService initializes a new store service
-func NewService(sr *store.MemRepo) *service {
+func NewService(sr *store.MemRepo, pr *repository.MemRepo) *service {
 	return &service{
-		Storage: sr,
+		StorageRepository: sr,
+		PluginRepository:  pr,
 	}
 }
