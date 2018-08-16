@@ -1,0 +1,79 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "bOODD4Gbw3GfcuQPU2dI40crxxk=",
+			"path": "github.com/PuerkitoBio/goquery",
+			"revision": "c641b87978a16588afa9ab1a02e02c8b8e05b314",
+			"revisionTime": "2017-03-08T19:48:52Z"
+		},
+		{
+			"checksumSHA1": "2rWSos1D+xqNSGkvEMOG3pntod8=",
+			"path": "github.com/andybalholm/cascadia",
+			"revision": "349dd0209470eabd9514242c688c403c0926d266",
+			"revisionTime": "2016-12-24T14:14:13Z"
+		},
+		{
+			"checksumSHA1": "YODbzvhUr0Tzp2/MkXflXph2hdY=",
+			"path": "github.com/go-chi/chi",
+			"revision": "e83ac2304db3c50cf03d96a2fcd39009d458bc35",
+			"revisionTime": "2017-12-22T16:11:33Z"
+		},
+		{
+			"checksumSHA1": "A2pvBObG7boB0BjpoUj3sBZAAsg=",
+			"path": "github.com/go-chi/render",
+			"revision": "8c8c7a43d054b536d7e18e82c4331e7258f211a2",
+			"revisionTime": "2017-12-31T23:41:54Z"
+		},
+		{
+			"checksumSHA1": "/UJOUopaUR3wpVgoq6A6pxSldPA=",
+			"path": "github.com/go-kit/kit/log",
+			"revision": "9813199613524eb386b05500880c1e26d2fc3da6",
+			"revisionTime": "2017-07-15T18:35:20Z"
+		},
+		{
+			"checksumSHA1": "KxX/Drph+byPXBFIXaCZaCOAnrU=",
+			"path": "github.com/go-logfmt/logfmt",
+			"revision": "390ab7935ee28ec6b286364bba9b4dd6410cb3d5",
+			"revisionTime": "2016-11-15T14:25:13Z"
+		},
+		{
+			"checksumSHA1": "KZ3QD2QgUS4RcoKiA3mn5pSlJxQ=",
+			"path": "github.com/go-stack/stack",
+			"revision": "54be5f394ed2c3e19dac9134a40a95ba5a017f7b",
+			"revisionTime": "2017-07-10T16:04:46Z"
+		},
+		{
+			"checksumSHA1": "jhwQ3OMQjBzNnzdkInK7G04Urws=",
+			"path": "github.com/gorilla/feeds",
+			"revision": "96fc32f661059113abb411d3183972185b68e4a2",
+			"revisionTime": "2018-06-17T23:59:57Z"
+		},
+		{
+			"checksumSHA1": "Jrjxy16tD9mUgr/jbhXwbHVeSa0=",
+			"path": "github.com/kelseyhightower/envconfig",
+			"revision": "462fda1f11d8cad3660e52737b8beefd27acfb3f",
+			"revisionTime": "2017-09-18T16:15:10Z"
+		},
+		{
+			"checksumSHA1": "W8mzTLRjnooGtHwWaxSX8eq8hlY=",
+			"path": "github.com/patrickmn/go-cache",
+			"revision": "5633e0862627c011927fa39556acae8b1f1df58a",
+			"revisionTime": "2018-08-15T05:31:27Z"
+		},
+		{
+			"checksumSHA1": "vqc3a+oTUGX8PmD0TS+qQ7gmN8I=",
+			"path": "golang.org/x/net/html",
+			"revision": "a6577fac2d73be281a500b310739095313165611",
+			"revisionTime": "2017-03-08T20:54:49Z"
+		},
+		{
+			"checksumSHA1": "00eQaGynDYrv3tL+C7l9xH0IDZg=",
+			"path": "golang.org/x/net/html/atom",
+			"revision": "a6577fac2d73be281a500b310739095313165611",
+			"revisionTime": "2017-03-08T20:54:49Z"
+		}
+	],
+	"rootPath": "github.com/dewey/feedbridge"
+}

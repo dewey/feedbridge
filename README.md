@@ -16,3 +16,7 @@ Returns the feed based on a given plugin and output format.
 
 - `plugin`: The name of the plugin as returned by `String()`
 - `format`: The format the feed should be returned in, can be `rss`, `atom` or `json`. By default it's RSS.
+
+## Status
+
+This is a work in progress and pretty rough right now. The API might change and things get moved around.
