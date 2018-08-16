@@ -1,3 +1,5 @@
+<img src="https://i.imgur.com/0j5LG0t.png" alt="feedbridge gopher" width="100">
+
 # feedbridge
 
 Is a tool to provide RSS feeds for sites that don't have one. For each site you want you'll have to create a plugin with a custom scraping strategy. feedbridge doesn't persist old items so if it's not on the site you are scraping any more it won't be in the feed. Pretty similar to how most feeds these days work that only have the latest items in there. It's using the neat [gorilla/feeds](https://github.com/gorilla/feeds) library which is supporting Atom, RSS 2.0, and JSON Feed Version 1 spec elements.
@@ -20,3 +22,7 @@ Returns the feed based on a given plugin and output format.
 ## Status
 
 This is a work in progress and pretty rough right now. The API might change and things get moved around.
+
+## Credits
+
+The Gopher was sourced from https://github.com/egonelbre/gophers, the RSS icon is coming from Wikipedia and was added by me.
