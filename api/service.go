@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/dewey/feedbridge/repository"
+	"github.com/dewey/feedbridge/plugin"
 	"github.com/dewey/feedbridge/store"
 )
 
@@ -16,11 +16,11 @@ type Service interface {
 
 type service struct {
 	StorageRepository *store.MemRepo
-	PluginRepository  *repository.MemRepo
+	PluginRepository  *plugin.MemRepo
 }
 
 // NewService initializes a new API service
-func NewService(sr *store.MemRepo, pr *repository.MemRepo) *service {
+func NewService(sr *store.MemRepo, pr *plugin.MemRepo) *service {
 	return &service{
 		StorageRepository: sr,
 		PluginRepository:  pr,

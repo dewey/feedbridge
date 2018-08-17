@@ -1,4 +1,4 @@
-package repository
+package plugin
 
 import (
 	"github.com/gorilla/feeds"

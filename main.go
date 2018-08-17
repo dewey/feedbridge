@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/dewey/feedbridge/api"
+	"github.com/dewey/feedbridge/plugin"
 	"github.com/dewey/feedbridge/plugins/scmp"
-	"github.com/dewey/feedbridge/repository"
 	"github.com/dewey/feedbridge/runner"
 	"github.com/dewey/feedbridge/store"
 	"github.com/go-chi/chi"
@@ -50,7 +50,7 @@ func main() {
 		Transport: t,
 	}
 
-	pluginRepo := repository.NewMemRepo()
+	pluginRepo := plugin.NewMemRepo()
 	pluginRepo.Install(scmp.NewPlugin(l, c))
 
 	runner := runner.NewRunner(l, pluginRepo, storageRepo, config.REFRESH_INTERVAL)
