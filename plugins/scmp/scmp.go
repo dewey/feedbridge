@@ -14,12 +14,14 @@ import (
 // Plugin defines a new plugin
 type plugin struct {
 	l log.Logger
+	c *http.Client
 }
 
 // NewChecker initializes a new dashboard exporter
-func NewPlugin(l log.Logger) *plugin {
+func NewPlugin(l log.Logger, c *http.Client) *plugin {
 	return &plugin{
 		l: l,
+		c: c,
 	}
 }
 
@@ -29,10 +31,6 @@ func (p *plugin) String() string {
 
 // Run runs the main checker function of the plugin
 func (p *plugin) Run() (*feeds.Feed, error) {
-	c := &http.Client{
-		Timeout: time.Second * 10,
-	}
-
 	req, err := http.NewRequest("GET", "https://www.scmp.com/topics/infographics-asia", nil)
 	if err != nil {
 		return nil, err
@@ -41,7 +39,7 @@ func (p *plugin) Run() (*feeds.Feed, error) {
 	req.Header.Set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15")
 	req.Header.Set("Accept-Language", "en-us")
 
-	resp, err := c.Do(req)
+	resp, err := p.c.Do(req)
 	if err != nil {
 		return nil, err
 

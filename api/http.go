@@ -41,6 +41,7 @@ func getFeedHandler(s service) http.HandlerFunc {
 		s, err := s.StorageRepository.Get(fmt.Sprintf("%s_%s", format, plugin))
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(s))

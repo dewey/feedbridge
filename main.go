@@ -1,6 +1,7 @@
 package main
 
 import (
+	"net"
 	"net/http"
 	"os"
 	"time"
@@ -32,16 +33,27 @@ func main() {
 	l := log.NewLogfmtLogger(log.NewSyncWriter(os.Stderr))
 	l = log.With(l, "ts", log.DefaultTimestampUTC, "caller", log.DefaultCaller)
 
-	c := cache.New(time.Duration(config.CACHE_EXPIRATION)*time.Minute, time.Duration(config.CACHE_EXPIRED_PURGE)*time.Minute)
-	storageRepo, err := store.NewMemRepository(c)
+	cache := cache.New(time.Duration(config.CACHE_EXPIRATION)*time.Minute, time.Duration(config.CACHE_EXPIRED_PURGE)*time.Minute)
+	storageRepo, err := store.NewMemRepository(cache)
 	if err != nil {
 		return
 	}
 
-	pluginRepo := repository.NewMemRepo()
-	pluginRepo.Install(scmp.NewPlugin(l))
+	t := &http.Transport{
+		Dial: (&net.Dialer{
+			Timeout: 5 * time.Second,
+		}).Dial,
+		TLSHandshakeTimeout: 5 * time.Second,
+	}
+	c := &http.Client{
+		Timeout:   time.Second * 10,
+		Transport: t,
+	}
 
-	runner := runner.NewRunner(l, config.REFRESH_INTERVAL, pluginRepo, storageRepo)
+	pluginRepo := repository.NewMemRepo()
+	pluginRepo.Install(scmp.NewPlugin(l, c))
+
+	runner := runner.NewRunner(l, pluginRepo, storageRepo, config.REFRESH_INTERVAL)
 	go runner.Start()
 
 	apiService := api.NewService(storageRepo, pluginRepo)

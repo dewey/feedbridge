@@ -11,7 +11,7 @@ type Repository interface {
 	All() []Plugin
 }
 
-// Plugin is the interface used in each plugin (handler)
+// Plugin is the interface that a scrape plugin has to implement
 type Plugin interface {
 	Run() (*feeds.Feed, error)
 	String() string
