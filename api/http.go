@@ -10,7 +10,7 @@ import (
 	"github.com/go-chi/render"
 )
 
-// NewHandler initializes a new serve router
+// NewHandler initializes a new feed router
 func NewHandler(s service) *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(render.SetContentType(render.ContentTypeJSON))
@@ -24,7 +24,7 @@ func NewHandler(s service) *chi.Mux {
 	return r
 }
 
-// getUserHandler returns information about a given existing user
+// getFeedHandler returns a feed in a specified format
 func getFeedHandler(s service) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		plugin := chi.URLParam(r, "plugin")
