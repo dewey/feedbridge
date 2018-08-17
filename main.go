@@ -19,9 +19,9 @@ import (
 
 // Config contains all configuration options that can be overwritten with environment variables
 type Config struct {
-	REFRESH_INTERVAL    int `default:"10"`
-	CACHE_EXPIRATION    int `default:"15"`
-	CACHE_EXPIRED_PURGE int `default:"20"`
+	REFRESH_INTERVAL    int `default:"15"`
+	CACHE_EXPIRATION    int `default:"30"`
+	CACHE_EXPIRED_PURGE int `default:"60"`
 }
 
 func main() {
