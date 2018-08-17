@@ -37,7 +37,7 @@ func (r *Runner) Start() {
 	if r.ticker != nil {
 		r.ticker.Stop()
 	}
-	r.ticker = time.NewTicker(time.Duration(r.CheckIntervalMinutes) * time.Second)
+	r.ticker = time.NewTicker(time.Duration(r.CheckIntervalMinutes) * time.Minute)
 	for range r.ticker.C {
 		time.Sleep(time.Duration(rand.Int63n(5000)) * time.Millisecond)
 
