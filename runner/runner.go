@@ -51,7 +51,7 @@ func (r *Runner) Start() {
 					return
 				}
 				wg.Done()
-				r.l.Log("msg", "scrape finished", "plugin", cp.String(), "feed_items", ss.Items)
+				log.With(r.l, "plugin", cp.String()).Log("msg", "scrape finished", "feed_items", ss.Items)
 			}(cp)
 		}
 		wg.Wait()

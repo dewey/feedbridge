@@ -24,7 +24,7 @@ type plugin struct {
 // NewChecker initializes a new dashboard exporter
 func NewPlugin(l log.Logger, c *http.Client) *plugin {
 	return &plugin{
-		l: l,
+		l: log.With(l, "plugin", "scmp"),
 		c: c,
 		f: &feeds.Feed{
 			Title:       "South China Morning Post",
@@ -68,7 +68,7 @@ func (p *plugin) Run() (*feeds.Feed, error) {
 		for i := 1; i < 2; i++ {
 			u, err := url.Parse(r.URL)
 			if err != nil {
-				fmt.Println(err)
+				p.l.Log("err", err)
 				continue
 			}
 			q := u.Query()
