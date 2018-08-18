@@ -120,6 +120,6 @@ func (r *Runner) runPlugin(cp plugin.Plugin) (scrape.Statistic, error) {
 	if err != nil {
 		return scrape.Statistic{}, err
 	}
-	r.StorageRepository.Save(fmt.Sprintf("atom_%s", cp.String()), json)
+	r.StorageRepository.Save(fmt.Sprintf("json_%s", cp.String()), json)
 	return scrape.Statistic{Items: len(f.Items)}, nil
 }
