@@ -88,7 +88,7 @@ func (r *Runner) Start() {
 
 				duration := time.Since(start)
 				scrapesDurationHistogram.WithLabelValues(cp.String()).Observe(duration.Seconds())
-				pluginItemsScraped.WithLabelValues(cp.String()).Add(float64(ss.Items))
+				pluginItemsScraped.WithLabelValues(cp.String()).Set(float64(ss.Items))
 				log.With(r.l, "plugin", cp.String()).Log("msg", "scrape finished", "feed_items", ss.Items)
 			}(cp)
 		}
