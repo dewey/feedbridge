@@ -26,6 +26,7 @@ The following environment variables are available, they all have sensible defaul
 - `REFRESH_INTERVAL`: The interval in which feeds get rescraped in minutes (Default: 15)
 - `CACHE_EXPIRATION`: The expiration time of the cache in minutes (Default: 30)
 - `CACHE_EXPIRED_PURGE`: The interval at which the expired cache elements will be purged in minutes (Default: 60)
+- `ENVIRONMENT`: The environment it's deployed in, `prod` and `develop` are possible values. `develop` sets the loglevel to `info` (Default: `develop`)
 
 ## Status
 

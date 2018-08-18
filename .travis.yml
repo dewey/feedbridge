@@ -1,0 +1,10 @@
+language: go
+go:
+ - "1.10"
+
+script:
+  - go test -race -v -tags integration $(go list ./... | grep -v vendor)
+
+notifications:
+  email:
+    - mail@notmyhostna.me
