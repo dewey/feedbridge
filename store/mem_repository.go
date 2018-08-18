@@ -1,7 +1,7 @@
 package store
 
 import (
-	"errors"
+	"fmt"
 
 	cache "github.com/patrickmn/go-cache"
 )
@@ -29,5 +29,5 @@ func (r *MemRepo) Get(key string) (string, error) {
 	if found {
 		return value.(string), nil
 	}
-	return "", errors.New("no value found for this key")
+	return "", fmt.Errorf("no value found for key '%s'", key)
 }
