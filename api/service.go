@@ -1,8 +1,12 @@
 package api
 
 import (
+	"fmt"
+
 	"github.com/dewey/feedbridge/plugin"
 	"github.com/dewey/feedbridge/store"
+	"github.com/go-kit/kit/log"
+	"github.com/go-kit/kit/log/level"
 )
 
 // Service provides access to the functions by the public API
@@ -15,14 +19,35 @@ type Service interface {
 }
 
 type service struct {
-	StorageRepository *store.MemRepo
-	PluginRepository  *plugin.MemRepo
+	l                 log.Logger
+	storageRepository *store.MemRepo
+	pluginRepository  *plugin.MemRepo
 }
 
 // NewService initializes a new API service
-func NewService(sr *store.MemRepo, pr *plugin.MemRepo) *service {
+func NewService(l log.Logger, sr *store.MemRepo, pr *plugin.MemRepo) *service {
 	return &service{
-		StorageRepository: sr,
-		PluginRepository:  pr,
+		l:                 l,
+		storageRepository: sr,
+		pluginRepository:  pr,
 	}
+}
+
+// ServeFeed returns the generated feed from the store backend
+func (s *service) ServeFeed(format string, plugin string) (string, error) {
+	feed, err := s.storageRepository.Get(fmt.Sprintf("%s_%s", format, plugin))
+	if err != nil {
+		level.Error(s.l).Log("msg", err)
+		return "", err
+	}
+	return feed, nil
+}
+
+func (s *service) ListFeeds() []string {
+	p := s.pluginRepository.All()
+	var plugins []string
+	for _, p := range p {
+		plugins = append(plugins, p.String())
+	}
+	return plugins
 }

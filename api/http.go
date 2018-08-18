@@ -3,7 +3,6 @@ package api
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi"
@@ -38,9 +37,9 @@ func getFeedHandler(s service) http.HandlerFunc {
 		if format == "" {
 			format = "rss"
 		}
-		s, err := s.StorageRepository.Get(fmt.Sprintf("%s_%s", format, plugin))
+		s, err := s.ServeFeed(format, plugin)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(w, errors.New("there was an error serving the feed").Error(), http.StatusInternalServerError)
 			return
 		}
 		w.WriteHeader(http.StatusOK)
@@ -51,14 +50,10 @@ func getFeedHandler(s service) http.HandlerFunc {
 // getPluginListHandler returns a list of all available plugins
 func getPluginListHandler(s service) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		p := s.PluginRepository.All()
-		var plugins []string
-		for _, p := range p {
-			plugins = append(plugins, p.String())
-		}
+		plugins := s.ListFeeds()
 		b, err := json.Marshal(plugins)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(w, errors.New("there was an error listing the plugins").Error(), http.StatusInternalServerError)
 			return
 		}
 		w.WriteHeader(http.StatusOK)

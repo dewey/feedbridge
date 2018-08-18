@@ -68,7 +68,7 @@ func main() {
 	runner := runner.NewRunner(l, pluginRepo, storageRepo, config.RefreshInterval)
 	go runner.Start()
 
-	apiService := api.NewService(storageRepo, pluginRepo)
+	apiService := api.NewService(l, storageRepo, pluginRepo)
 
 	r := chi.NewRouter()
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
