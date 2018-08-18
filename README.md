@@ -2,7 +2,10 @@
 
 # feedbridge
 
-[![Build Status](https://travis-ci.com/dewey/feedbridge.svg?branch=master)](https://travis-ci.com/dewey/feedbridge) 
+[![Build Status](https://travis-ci.com/dewey/feedbridge.svg?branch=master)](https://travis-ci.com/dewey/feedbridge)
+[![Go Report Card](https://goreportcard.com/badge/github.com/dewey/feedbridge)](https://goreportcard.com/report/github.com/dewey/feedbridge)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/dewey/feedbridge/LICENSE)
+[![Badges](https://img.shields.io/badge/badges-all%20of%20them-brightgreen.svg)](https://github.com/dewey/feedbridge)
 
 Is a tool to provide RSS feeds for sites that don't have one, or only offer a feed of headlines. For each site—or kind of site—you want to generate a feed for you'll have to implement a plugin with a custom scraping strategy. feedbridge doesn't persist old items so if it's not on the site you are scraping any more it won't be in the feed. Pretty similar to how most feeds these days work that only have the latest items in there. It publishes Atom, RSS 2.0, and JSON Feed Version 1 conform feeds.
 
