@@ -11,6 +11,9 @@ test:
 image:
 	docker build -t $(IMAGE_NAME) .
 
+image-push:
+	docker push $(IMAGE_NAME):latest
+
 # release:
 # 	git tag -a $(VERSION) -m "Release" || true
 # 	git push origin $(VERSION)
