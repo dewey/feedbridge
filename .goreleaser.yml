@@ -8,11 +8,6 @@ archive:
     windows: Windows
     386: i386
     amd64: x86_64
-dockers:
-  - image: tehwey/feedbridge
-  - tag_templates:
-    - "v{{ .Major }}.{{ .Minor }}"
-    - latest
 checksum:
   name_template: 'checksums.txt'
 snapshot:
