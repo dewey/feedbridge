@@ -65,7 +65,7 @@ func (p *plugin) Run() (*feeds.Feed, error) {
 
 		// Create tasks for pagination
 		var subTask []scrape.Task
-		for i := 1; i < 2; i++ {
+		for i := 1; i < 5; i++ {
 			u, err := url.Parse(r.URL)
 			if err != nil {
 				p.l.Log("err", err)
@@ -117,7 +117,7 @@ func (p *plugin) listHandler(doc *goquery.Document) ([]*feeds.Item, error) {
 		is := s.Find("div.background-image > a > img")
 		val, exists = is.Attr("data-original")
 		if exists {
-			item.Description = fmt.Sprintf(`<img src="%s">`, val)
+			item.Description = fmt.Sprintf(`<img src="%s" width="300px">`, val)
 		}
 
 		ts := s.Find("span.rdf-meta")
