@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net"
 	"net/http"
 	"os"
@@ -28,6 +29,7 @@ func main() {
 		CacheExpiration   int    `env:"CACHE_EXPIRATION" envDefault:"30"`
 		CacheExpiredPurge int    `env:"CACHE_EXPIRED_PURGE" envDefault:"60"`
 		Environment       string `env:"ENVIRONMENT" envDefault:"develop"`
+		Port              int    `env:"PORT" envDefault:"8080"`
 	}
 	err := env.Parse(&config)
 	if err != nil {
@@ -75,7 +77,7 @@ func main() {
 	r.Handle("/metrics", promhttp.Handler())
 	// TODO(dewey): Switch to promhttp middleware instead of this deprecated one
 	r.Mount("/feed", prometheus.InstrumentHandler("feed", api.NewHandler(*apiService)))
-	err = http.ListenAndServe(":8080", r)
+	err = http.ListenAndServe(fmt.Sprintf(":%s", config.Port), r)
 	if err != nil {
 		panic(err)
 	}

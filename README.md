@@ -29,6 +29,7 @@ The following environment variables are available, they all have sensible defaul
 - `CACHE_EXPIRATION`: The expiration time of the cache in minutes (Default: 30)
 - `CACHE_EXPIRED_PURGE`: The interval at which the expired cache elements will be purged in minutes (Default: 60)
 - `ENVIRONMENT`: The environment it's deployed in, `prod` and `develop` are possible values. `develop` sets the loglevel to `info` (Default: `develop`)
+- `PORT`: Port that feedbridge is running on (Default: `8080`)
 
 ## Status
 
