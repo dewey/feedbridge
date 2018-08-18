@@ -4,7 +4,12 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"strings"
 	"time"
+
+	"github.com/caarlos0/env"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"github.com/dewey/feedbridge/api"
 	"github.com/dewey/feedbridge/plugin"
@@ -13,27 +18,32 @@ import (
 	"github.com/dewey/feedbridge/store"
 	"github.com/go-chi/chi"
 	"github.com/go-kit/kit/log"
-	"github.com/kelseyhightower/envconfig"
+	"github.com/go-kit/kit/log/level"
 	cache "github.com/patrickmn/go-cache"
 )
 
-// Config contains all configuration options that can be overwritten with environment variables
-type Config struct {
-	REFRESH_INTERVAL    int `default:"15"`
-	CACHE_EXPIRATION    int `default:"30"`
-	CACHE_EXPIRED_PURGE int `default:"60"`
-}
-
 func main() {
-	var config Config
-	err := envconfig.Process("fb", &config)
+	var config struct {
+		RefreshInterval   int    `env:"REFRESH_INTERVAL" envDefault:"15"`
+		CacheExpiration   int    `env:"CACHE_EXPIRATION" envDefault:"30"`
+		CacheExpiredPurge int    `env:"CACHE_EXPIRED_PURGE" envDefault:"60"`
+		Environment       string `env:"ENVIRONMENT" envDefault:"develop"`
+	}
+	err := env.Parse(&config)
 	if err != nil {
 		panic(err)
 	}
+
 	l := log.NewLogfmtLogger(log.NewSyncWriter(os.Stderr))
+	switch strings.ToLower(config.Environment) {
+	case "develop":
+		l = level.NewFilter(l, level.AllowInfo())
+	case "prod":
+		l = level.NewFilter(l, level.AllowError())
+	}
 	l = log.With(l, "ts", log.DefaultTimestampUTC, "caller", log.DefaultCaller)
 
-	cache := cache.New(time.Duration(config.CACHE_EXPIRATION)*time.Minute, time.Duration(config.CACHE_EXPIRED_PURGE)*time.Minute)
+	cache := cache.New(time.Duration(config.CacheExpiration)*time.Minute, time.Duration(config.CacheExpiredPurge)*time.Minute)
 	storageRepo, err := store.NewMemRepository(cache)
 	if err != nil {
 		return
@@ -53,7 +63,7 @@ func main() {
 	pluginRepo := plugin.NewMemRepo()
 	pluginRepo.Install(scmp.NewPlugin(l, c))
 
-	runner := runner.NewRunner(l, pluginRepo, storageRepo, config.REFRESH_INTERVAL)
+	runner := runner.NewRunner(l, pluginRepo, storageRepo, config.RefreshInterval)
 	go runner.Start()
 
 	apiService := api.NewService(storageRepo, pluginRepo)
@@ -62,7 +72,9 @@ func main() {
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("feedbridge"))
 	})
-	r.Mount("/feed", api.NewHandler(*apiService))
+	r.Handle("/metrics", promhttp.Handler())
+	// TODO(dewey): Switch to promhttp middleware instead of this deprecated one
+	r.Mount("/feed", prometheus.InstrumentHandler("feed", api.NewHandler(*apiService)))
 	err = http.ListenAndServe(":8080", r)
 	if err != nil {
 		panic(err)

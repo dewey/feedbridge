@@ -8,10 +8,13 @@ import (
 	"time"
 
 	"github.com/go-kit/kit/log"
+	"github.com/go-kit/kit/log/level"
+	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/dewey/feedbridge/plugin"
 	"github.com/dewey/feedbridge/scrape"
 	"github.com/dewey/feedbridge/store"
+	"github.com/gorilla/feeds"
 )
 
 type Runner struct {
@@ -33,24 +36,57 @@ func NewRunner(l log.Logger, pluginRepo *plugin.MemRepo, storageRepo *store.MemR
 	}
 }
 
+func init() {
+	prometheus.MustRegister(scrapesDurationHistogram, pluginItemsScraped)
+}
+
+var scrapesDurationHistogram = prometheus.NewHistogramVec(
+	prometheus.HistogramOpts{
+		Namespace: "fb",
+		Subsystem: "runner",
+		Name:      "scrape_duration_seconds",
+		Help:      "Scrape duration distribution of a plugin.",
+		Buckets:   []float64{5, 10, 20, 60, 120},
+	},
+	[]string{"plugin"},
+)
+
+var pluginItemsScraped = prometheus.NewGaugeVec(
+	prometheus.GaugeOpts{
+		Namespace: "fb",
+		Subsystem: "runner",
+		Name:      "items_scraped",
+		Help:      "Number of items scraped by a plugin.",
+	},
+	[]string{"plugin"},
+)
+
 func (r *Runner) Start() {
+	level.Info(r.l).Log("msg", "starting plugin runner")
+
 	if r.ticker != nil {
 		r.ticker.Stop()
 	}
 	r.ticker = time.NewTicker(time.Duration(r.CheckIntervalMinutes) * time.Minute)
 	for range r.ticker.C {
 		time.Sleep(time.Duration(rand.Int63n(5000)) * time.Millisecond)
-
 		var wg sync.WaitGroup
 		for _, cp := range r.PluginRepository.All() {
 			wg.Add(1)
 			go func(cp plugin.Plugin) {
+				start := time.Now()
+				log.With(r.l, "plugin", cp.String()).Log("msg", "scrape started")
 				// TODO(dewey): Do I need to wg.Done() if it errors?
 				ss, err := r.runPlugin(cp)
 				if err != nil {
+					level.Error(r.l).Log("err", err)
 					return
 				}
 				wg.Done()
+
+				duration := time.Since(start)
+				scrapesDurationHistogram.WithLabelValues(cp.String()).Observe(duration.Seconds())
+				pluginItemsScraped.WithLabelValues(cp.String()).Add(float64(ss.Items))
 				log.With(r.l, "plugin", cp.String()).Log("msg", "scrape finished", "feed_items", ss.Items)
 			}(cp)
 		}
@@ -63,6 +99,9 @@ func (r *Runner) runPlugin(cp plugin.Plugin) (scrape.Statistic, error) {
 	if err != nil {
 		return scrape.Statistic{}, err
 	}
+	f.Sort(func(a, b *feeds.Item) bool {
+		return a.Created.After(b.Created)
+	})
 	rss, err := f.ToRss()
 	if err != nil {
 		return scrape.Statistic{}, err
