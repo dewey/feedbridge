@@ -77,7 +77,7 @@ func (r *Runner) Start() {
 			wg.Add(1)
 			go func(cp plugin.Plugin) {
 				start := time.Now()
-				log.With(r.l, "plugin", cp.String()).Log("msg", "scrape started")
+				level.Info(log.With(r.l, "plugin", cp.String())).Log("msg", "scrape started")
 				// TODO(dewey): Do I need to wg.Done() if it errors?
 				ss, err := r.runPlugin(cp)
 				if err != nil {
@@ -89,7 +89,7 @@ func (r *Runner) Start() {
 				duration := time.Since(start)
 				scrapesDurationHistogram.WithLabelValues(cp.String()).Observe(duration.Seconds())
 				pluginItemsScraped.WithLabelValues(cp.String()).Set(float64(ss.Items))
-				log.With(r.l, "plugin", cp.String()).Log("msg", "scrape finished", "feed_items", ss.Items)
+				level.Info(log.With(r.l, "plugin", cp.String())).Log("msg", "scrape finished", "feed_items", ss.Items)
 			}(cp)
 		}
 		wg.Wait()
