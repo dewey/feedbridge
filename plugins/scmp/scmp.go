@@ -21,7 +21,7 @@ type plugin struct {
 	f *feeds.Feed
 }
 
-// NewChecker initializes a new dashboard exporter
+// NewPlugin initializes a new plugin
 func NewPlugin(l log.Logger, c *http.Client) *plugin {
 	return &plugin{
 		l: log.With(l, "plugin", "scmp"),

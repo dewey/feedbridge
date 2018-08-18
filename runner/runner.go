@@ -17,6 +17,7 @@ import (
 	"github.com/gorilla/feeds"
 )
 
+// Runner runs scrapes
 type Runner struct {
 	l                    log.Logger
 	Client               *http.Client
@@ -61,6 +62,7 @@ var pluginItemsScraped = prometheus.NewGaugeVec(
 	[]string{"plugin"},
 )
 
+// Start schedules new scrapes and runs them
 func (r *Runner) Start() {
 	level.Info(r.l).Log("msg", "starting plugin runner")
 

@@ -19,6 +19,7 @@ type Task struct {
 	Payload string
 }
 
+// Statistic contains statistics about a scrape
 type Statistic struct {
 	Items int
 }
