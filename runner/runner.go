@@ -64,8 +64,6 @@ var pluginItemsScraped = prometheus.NewGaugeVec(
 
 // Start schedules new scrapes and runs them
 func (r *Runner) Start() {
-	level.Info(r.l).Log("msg", "starting plugin runner")
-
 	if r.ticker != nil {
 		r.ticker.Stop()
 	}

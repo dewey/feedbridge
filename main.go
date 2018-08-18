@@ -77,6 +77,7 @@ func main() {
 	r.Handle("/metrics", promhttp.Handler())
 	// TODO(dewey): Switch to promhttp middleware instead of this deprecated one
 	r.Mount("/feed", prometheus.InstrumentHandler("feed", api.NewHandler(*apiService)))
+	l.Log("msg", fmt.Sprintf("feedbridge listening on :%d", config.Port))
 	err = http.ListenAndServe(fmt.Sprintf(":%d", config.Port), r)
 	if err != nil {
 		panic(err)
