@@ -52,6 +52,7 @@ func (s *service) ListFeeds() []plugin.PluginMetadata {
 			TechnicalName: p.Info().TechnicalName,
 			Image:         p.Info().Image,
 			Author:        p.Info().Author,
+			AuthorURL:     p.Info().AuthorURL,
 			SourceURL:     p.Info().SourceURL,
 		})
 	}

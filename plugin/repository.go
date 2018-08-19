@@ -22,6 +22,7 @@ type PluginMetadata struct {
 	Name          string
 	Description   string
 	Author        string
+	AuthorURL     string
 	Image         string
 	SourceURL     string
 }
