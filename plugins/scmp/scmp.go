@@ -3,11 +3,11 @@ package scmp
 import (
 	"fmt"
 	"net/http"
-	"net/url"
-	"strconv"
 	"time"
 
+	pm "github.com/dewey/feedbridge/plugin"
 	"github.com/dewey/feedbridge/scrape"
+
 	"github.com/go-kit/kit/log"
 
 	"github.com/PuerkitoBio/goquery"
@@ -35,8 +35,15 @@ func NewPlugin(l log.Logger, c *http.Client) *plugin {
 	}
 }
 
-func (p *plugin) String() string {
-	return "scmp"
+func (p *plugin) Info() pm.PluginMetadata {
+	return pm.PluginMetadata{
+		TechnicalName: "scmp",
+		Name:          "The South China Morning Post: Infographics",
+		Description:   `Scraping the Infographics section of South China Morning Post as there's no RSS feed available. The Infographics cover various topics like Politics, Lifestyle, Science and Economy.`,
+		Author:        "Philipp",
+		Image:         "https://i.imgur.com/pPVoXVh.png",
+		SourceURL:     "https://www.scmp.com/topics/infographics-asia",
+	}
 }
 
 // Run runs the main checker function of the plugin
@@ -64,33 +71,33 @@ func (p *plugin) Run() (*feeds.Feed, error) {
 		feedItems = append(feedItems, items...)
 
 		// Create tasks for pagination
-		var subTask []scrape.Task
-		for i := 1; i < 5; i++ {
-			u, err := url.Parse(r.URL)
-			if err != nil {
-				p.l.Log("err", err)
-				continue
-			}
-			q := u.Query()
-			q.Add("page", strconv.Itoa(i))
-			u.RawQuery = q.Encode()
-			subTask = append(subTask, scrape.Task{
-				URL: u.String(),
-			})
-		}
+		// var subTask []scrape.Task
+		// for i := 1; i < 5; i++ {
+		// 	u, err := url.Parse(r.URL)
+		// 	if err != nil {
+		// 		p.l.Log("err", err)
+		// 		continue
+		// 	}
+		// 	q := u.Query()
+		// 	q.Add("page", strconv.Itoa(i))
+		// 	u.RawQuery = q.Encode()
+		// 	subTask = append(subTask, scrape.Task{
+		// 		URL: u.String(),
+		// 	})
+		// }
 
 		// Get all items from other pages
-		result, err := scrape.URLToDocument(p.c, subTask)
-		if err != nil {
-			return nil, err
-		}
-		for _, r := range result {
-			items, err := p.listHandler(&r.Document)
-			if err != nil {
-				p.l.Log("err", err)
-			}
-			feedItems = append(feedItems, items...)
-		}
+		// result, err := scrape.URLToDocument(p.c, subTask)
+		// if err != nil {
+		// 	return nil, err
+		// }
+		// for _, r := range result {
+		// 	items, err := p.listHandler(&r.Document)
+		// 	if err != nil {
+		// 		p.l.Log("err", err)
+		// 	}
+		// 	feedItems = append(feedItems, items...)
+		// }
 	}
 	p.f.Items = feedItems
 	return p.f, nil
@@ -133,13 +140,18 @@ func (p *plugin) listHandler(doc *goquery.Document) ([]*feeds.Item, error) {
 		times := s.Find("time.updated")
 		val, exists = times.Attr("content")
 		if exists {
+			fmt.Println(val)
 			t, err := time.Parse("2006-01-02T15:04:05-07:00", val)
 			if err == nil {
+				fmt.Println(t)
 				item.Updated = t
+				item.Created = t
 			} else {
 				p.l.Log("err", err)
 			}
 		}
+
+		fmt.Println(item)
 
 		feedItems = append(feedItems, item)
 	})

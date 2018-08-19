@@ -43,11 +43,17 @@ func (s *service) ServeFeed(format string, plugin string) (string, error) {
 	return feed, nil
 }
 
-func (s *service) ListFeeds() []string {
-	p := s.pluginRepository.All()
-	var plugins []string
-	for _, p := range p {
-		plugins = append(plugins, p.String())
+func (s *service) ListFeeds() []plugin.PluginMetadata {
+	var pp []plugin.PluginMetadata
+	for _, p := range s.pluginRepository.All() {
+		pp = append(pp, plugin.PluginMetadata{
+			Name:          p.Info().Name,
+			Description:   p.Info().Description,
+			TechnicalName: p.Info().TechnicalName,
+			Image:         p.Info().Image,
+			Author:        p.Info().Author,
+			SourceURL:     p.Info().SourceURL,
+		})
 	}
-	return plugins
+	return pp
 }

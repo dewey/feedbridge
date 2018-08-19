@@ -76,7 +76,7 @@ func (r *Runner) Start() {
 			go func(cp plugin.Plugin) {
 				defer wg.Done()
 				start := time.Now()
-				level.Info(log.With(r.l, "plugin", cp.String())).Log("msg", "scrape started")
+				level.Info(log.With(r.l, "plugin", cp.Info().TechnicalName)).Log("msg", "scrape started")
 				ss, err := r.runPlugin(cp)
 				if err != nil {
 					level.Error(r.l).Log("err", err)
@@ -84,9 +84,9 @@ func (r *Runner) Start() {
 				}
 
 				duration := time.Since(start)
-				scrapesDurationHistogram.WithLabelValues(cp.String()).Observe(duration.Seconds())
-				pluginItemsScraped.WithLabelValues(cp.String()).Set(float64(ss.Items))
-				level.Info(log.With(r.l, "plugin", cp.String())).Log("msg", "scrape finished", "feed_items", ss.Items)
+				scrapesDurationHistogram.WithLabelValues(cp.Info().TechnicalName).Observe(duration.Seconds())
+				pluginItemsScraped.WithLabelValues(cp.Info().TechnicalName).Set(float64(ss.Items))
+				level.Info(log.With(r.l, "plugin", cp.Info().TechnicalName)).Log("msg", "scrape finished", "feed_items", ss.Items)
 			}(cp)
 		}
 		wg.Wait()
@@ -105,18 +105,18 @@ func (r *Runner) runPlugin(cp plugin.Plugin) (scrape.Statistic, error) {
 	if err != nil {
 		return scrape.Statistic{}, err
 	}
-	r.StorageRepository.Save(fmt.Sprintf("rss_%s", cp.String()), rss)
+	r.StorageRepository.Save(fmt.Sprintf("rss_%s", cp.Info().TechnicalName), rss)
 
 	atom, err := f.ToAtom()
 	if err != nil {
 		return scrape.Statistic{}, err
 	}
-	r.StorageRepository.Save(fmt.Sprintf("atom_%s", cp.String()), atom)
+	r.StorageRepository.Save(fmt.Sprintf("atom_%s", cp.Info().TechnicalName), atom)
 
 	json, err := f.ToJSON()
 	if err != nil {
 		return scrape.Statistic{}, err
 	}
-	r.StorageRepository.Save(fmt.Sprintf("json_%s", cp.String()), json)
+	r.StorageRepository.Save(fmt.Sprintf("json_%s", cp.Info().TechnicalName), json)
 	return scrape.Statistic{Items: len(f.Items)}, nil
 }

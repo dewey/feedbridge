@@ -28,11 +28,11 @@ func (mr *MemRepo) Install(p Plugin) {
 	mr.Lock()
 	defer mr.Unlock()
 
-	if _, ok := mr.plugins[p.String()]; ok {
-		panic(fmt.Sprintf("plugin with name '%s' already exists", p.String()))
+	if _, ok := mr.plugins[p.Info().TechnicalName]; ok {
+		panic(fmt.Sprintf("plugin with name '%s' already exists", p.Info().TechnicalName))
 	}
 
-	mr.plugins[p.String()] = p
+	mr.plugins[p.Info().TechnicalName] = p
 }
 
 // Find finds a plugin by name
