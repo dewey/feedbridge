@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Feedbridge</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="/node_modules/tachyons/css/tachyons.css">
+<script src="/node_modules/vue/dist/vue.js"></script>
+<script src="/node_modules/axios/dist/axios.js"></script>
+
+<body class="w-100 bg-green white avenir">
+  <div id="app">
+    <section class="mw5 mw7-ns center">
+      <nav class="db dt-l w-100 border-box pv4">
+        <a class="db dtc-l v-mid mid-gray link dim w-100 w-25-l tc tl-l mb2 mb0-l" href="#" title="Home">
+          <img src="/static/img/icon.png" class="dib h3" alt="Feedbridge icon">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+          <a class="link dim f6 white f5-l mr3 mr4-l" href="#" title="Home">Home</a>
+          <a class="link dim f6 white f5-l" href="#about" title="About">About</a>
+        </div>
+      </nav>
+      <section class="mw7 center">
+        <h2 class="f3 ph3 ph0-l">What is Feedbridge?</h2>
+        <article class="lh-copy">
+          <p>Feedbridge is a tool that generates RSS / Atom or JSON feeds for websites that don't have one or only offer one
+            without the full content. Feedbridge is plugin-based, so for a website to be available here a plugin to scrape
+            the source needs to be built and deployed. It's built by
+            <a href="https://twitter.com/tehwey" class="link dim white underline">me</a> mostly for myself but I'm happy to build more plugins or merge yours.</p>
+          <p>Everyone can contribute by creating a plugin (Written in Go) and opening a Pull Request on
+            <a href="https://github.com/dewey/feedbridge" class="link dim white underline">Github</a>.</p>
+        </article>
+      </section>
+      <section class="mw7 center">
+        <h2 class="f3 ph3 ph0-l">Available Feeds ({{ plugins.length }})</h2>
+        <article class="bt bb" v-for="plugin in plugins">
+          <div class="flex flex-column flex-row-ns db pv4 ph3 ph0-l">
+            <div class="pr3-ns mb4 mb0-ns w-100 w-40-ns">
+              <img :src=plugin.Image class="db" alt="">
+            </div>
+            <div class="w-100 w-60-ns pl3-ns">
+              <h1 class="f3 fw4 mt0 lh-title">{{ plugin.Name }}</h1>
+              <p class="f6 f5-l lh-copy raw-text-link" v-html="plugin.Description"></p>
+              <p class="f6 lh-copy mv0">By
+                <a :href="plugin.AuthorURL" class="link dim white underline">{{ plugin.Author }}</a>
+                based on
+                <a :href="plugin.SourceURL" class="link dim white underline">this data source</a>.
+              </p>
+              <section class="pt4">
+                <a class="ba white no-underline grow br2 b inline-flex items-center mr3 mb3 pv2 ph3" target="_blank" :href="'/feed/' + plugin.TechnicalName + '/rss'"
+                  title="RSS feed">
+                  <span>RSS</span>
+                </a>
+                <a class="ba white no-underline grow br2 b inline-flex items-center mr3 mb3 pv2 ph3" target="_blank" :href="'/feed/' + plugin.TechnicalName + '/atom'"
+                  title="Atom feed">
+                  <span>Atom</span>
+                </a>
+                <a class="ba white no-underline grow br2 b inline-flex items-center mr3 mb3 pv2 ph3" target="_blank" :href="'/feed/' + plugin.TechnicalName + '/json'"
+                  title="JSON feed">
+                  <span>JSON</span>
+                </a>
+              </section>
+            </div>
+          </div>
+        </article>
+      </section>
+      <section class="mw7 center">
+        <h2 class="f3 ph3 ph0-l lh-copy" id="about">About</h2>
+        All active feeds are refreshed every 15 minutes. Just copy the URL in preferred format and add it to your feed reader.
+      </section>
+      <footer class="pv6 center white">
+        <p class="f6 db lh-solid">
+          <a href="https://github.com/dewey/feedbridge" class="pr2 link dim white">Source on Github</a>
+          <a href="https://twitter.com/tehwey" class="pr2 link dim white">Twitter</a>
+          <a href="mailto:" class="link dim white">mail@notmyhostna.me</a>
+        </p>
+      </footer>
+    </section>
+  </div>
+  <script src="app.js"></script>
+</body>
+
+</html>
