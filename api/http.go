@@ -6,13 +6,11 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi"
-	"github.com/go-chi/render"
 )
 
 // NewHandler initializes a new feed router
 func NewHandler(s service) *chi.Mux {
 	r := chi.NewRouter()
-	r.Use(render.SetContentType(render.ContentTypeJSON))
 
 	// Public routes
 	r.Group(func(r chi.Router) {
@@ -27,13 +25,12 @@ func NewHandler(s service) *chi.Mux {
 func getFeedHandler(s service) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		plugin := chi.URLParam(r, "plugin")
-		format := chi.URLParam(r, "format")
-
 		if plugin == "" {
 			http.Error(w, errors.New("plugin not allowed to be empty").Error(), http.StatusInternalServerError)
 			return
 		}
 
+		format := chi.URLParam(r, "format")
 		if format == "" {
 			format = "rss"
 		}
@@ -41,6 +38,15 @@ func getFeedHandler(s service) http.HandlerFunc {
 		if err != nil {
 			http.Error(w, errors.New("there was an error serving the feed").Error(), http.StatusInternalServerError)
 			return
+		}
+
+		switch format {
+		case "atom":
+			w.Header().Set("Content-Type", "application/atom+xml")
+		case "json":
+			w.Header().Set("Content-Type", "application/json")
+		default:
+			w.Header().Set("Content-Type", "application/rss+xml")
 		}
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(s))
