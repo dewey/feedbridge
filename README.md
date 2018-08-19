@@ -24,15 +24,29 @@ Returns the feed based on a given plugin and output format. That's the URL you s
 - `plugin`: The name of the plugin as returned by `String()`
 - `format`: The format the feed should be returned in, can be `rss`, `atom` or `json`. By default it's RSS.
 
+**GET /metrics**
+
+Returns the exported Prometheus metrics.
+
 ## Configuration and Operation
+
+### Environment
 
 The following environment variables are available, they all have sensible defaults and don't need to be set explicity.
 
 - `REFRESH_INTERVAL`: The interval in which feeds get rescraped in minutes (Default: 15)
 - `CACHE_EXPIRATION`: The expiration time of the cache in minutes (Default: 30)
 - `CACHE_EXPIRED_PURGE`: The interval at which the expired cache elements will be purged in minutes (Default: 60)
-- `ENVIRONMENT`: The environment it's deployed in, `prod` and `develop` are possible values. `develop` sets the loglevel to `info` (Default: `develop`)
+- `ENVIRONMENT`: Environment can be `prod` or `develop`. `develop` sets the loglevel to `info` (Default: `develop`)
 - `PORT`: Port that feedbridge is running on (Default: `8080`)
+
+### Run with Docker
+
+You can change all these options in the included `docker-compose.yml` file and use `docker-compose -f docker-compose.yml up -d` to run the project.
+
+### Monitoring
+
+As the project already exports Prometheus metrics you can use Grafana to get more information about how many things are being scraped and how fast requests are served. You can import the included `grafana-dashboard.json` in Grafana.
 
 ## Status
 

@@ -74,15 +74,14 @@ func (r *Runner) Start() {
 		for _, cp := range r.PluginRepository.All() {
 			wg.Add(1)
 			go func(cp plugin.Plugin) {
+				defer wg.Done()
 				start := time.Now()
 				level.Info(log.With(r.l, "plugin", cp.String())).Log("msg", "scrape started")
-				// TODO(dewey): Do I need to wg.Done() if it errors?
 				ss, err := r.runPlugin(cp)
 				if err != nil {
 					level.Error(r.l).Log("err", err)
 					return
 				}
-				wg.Done()
 
 				duration := time.Since(start)
 				scrapesDurationHistogram.WithLabelValues(cp.String()).Observe(duration.Seconds())
