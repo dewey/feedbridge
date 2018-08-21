@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"net"
 	"net/http"
@@ -8,7 +9,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/alecthomas/template"
 	"github.com/caarlos0/env"
+	"github.com/gobuffalo/packr"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
@@ -71,13 +74,30 @@ func main() {
 
 	apiService := api.NewService(l, storageRepo, pluginRepo)
 
+	templates := packr.NewBox("./ui/templates")
+	assets := packr.NewBox("./ui/assets")
+
 	r := chi.NewRouter()
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("feedbridge"))
+		t, err := template.New("index.tmpl").Parse(templates.String("index.tmpl"))
+		if err != nil {
+			http.Error(w, errors.New("couldn't serve template").Error(), http.StatusInternalServerError)
+			return
+		}
+		if err := t.Execute(w, apiService.ListFeeds()); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	})
+
+	r.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(assets)))
 	r.Handle("/metrics", promhttp.Handler())
+
 	// TODO(dewey): Switch to promhttp middleware instead of this deprecated one
 	r.Mount("/feed", prometheus.InstrumentHandler("feed", api.NewHandler(*apiService)))
+	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("nothing to see here"))
+	})
 	l.Log("msg", fmt.Sprintf("feedbridge listening on %s:%d", config.APIHostname, config.Port))
 	err = http.ListenAndServe(fmt.Sprintf(":%d", config.Port), r)
 	if err != nil {
