@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"text/template"
 	"time"
 
-	"github.com/alecthomas/template"
 	"github.com/caarlos0/env"
 	"github.com/gobuffalo/packr"
 	"github.com/prometheus/client_golang/prometheus"

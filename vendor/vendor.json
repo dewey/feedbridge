@@ -33,10 +33,10 @@
 			"revisionTime": "2017-12-22T16:11:33Z"
 		},
 		{
-			"checksumSHA1": "A2pvBObG7boB0BjpoUj3sBZAAsg=",
-			"path": "github.com/go-chi/render",
-			"revision": "8c8c7a43d054b536d7e18e82c4331e7258f211a2",
-			"revisionTime": "2017-12-31T23:41:54Z"
+			"checksumSHA1": "n9ry/OHiteTTjZOeJHTrEwRSnms=",
+			"path": "github.com/go-chi/cors",
+			"revision": "07727c846d14299758e54a275dd8c81353c01960",
+			"revisionTime": "2018-08-16T15:23:45Z"
 		},
 		{
 			"checksumSHA1": "/UJOUopaUR3wpVgoq6A6pxSldPA=",
@@ -63,6 +63,12 @@
 			"revisionTime": "2017-07-10T16:04:46Z"
 		},
 		{
+			"checksumSHA1": "a07Eijt84YjxqyJj/gwvm/XRhM0=",
+			"path": "github.com/gobuffalo/packr",
+			"revision": "500395e82e4a23c9a2f60483a9e34a18d8df1584",
+			"revisionTime": "2018-08-20T12:16:56Z"
+		},
+		{
 			"checksumSHA1": "mE9XW26JSpe4meBObM6J/Oeq0eg=",
 			"path": "github.com/golang/protobuf/proto",
 			"revision": "aa810b61a9c79d51363740d207bb46cf8e620ed5",
@@ -75,12 +81,6 @@
 			"revisionTime": "2018-08-19T13:17:00Z"
 		},
 		{
-			"checksumSHA1": "Jrjxy16tD9mUgr/jbhXwbHVeSa0=",
-			"path": "github.com/kelseyhightower/envconfig",
-			"revision": "462fda1f11d8cad3660e52737b8beefd27acfb3f",
-			"revisionTime": "2017-09-18T16:15:10Z"
-		},
-		{
 			"checksumSHA1": "bKMZjd2wPw13VwoE7mBeSv5djFA=",
 			"path": "github.com/matttproud/golang_protobuf_extensions/pbutil",
 			"revision": "c12348ce28de40eed0136aa2b644d0ee0650e56c",
@@ -91,6 +91,12 @@
 			"path": "github.com/patrickmn/go-cache",
 			"revision": "5633e0862627c011927fa39556acae8b1f1df58a",
 			"revisionTime": "2018-08-15T05:31:27Z"
+		},
+		{
+			"checksumSHA1": "ljd3FhYRJ91cLZz3wsH9BQQ2JbA=",
+			"path": "github.com/pkg/errors",
+			"revision": "816c9085562cd7ee03e7f8188a1cfd942858cded",
+			"revisionTime": "2018-03-11T21:45:15Z"
 		},
 		{
 			"checksumSHA1": "vuxZYORrJkB2dB6OXtqVCfT7+0I=",
