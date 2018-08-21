@@ -141,10 +141,8 @@ func (p *plugin) listHandler(doc *goquery.Document) ([]*feeds.Item, error) {
 		times := s.Find("time.updated")
 		val, exists = times.Attr("content")
 		if exists {
-			fmt.Println(val)
 			t, err := time.Parse("2006-01-02T15:04:05-07:00", val)
 			if err == nil {
-				fmt.Println(t)
 				item.Updated = t
 				item.Created = t
 			} else {
