@@ -24,10 +24,6 @@
     border-color: rgba(0, 0, 0, .1);
 }
 
-.db {
-    display: block;
-}
-
 p.raw-text-link>a {
     color: white;
 }
@@ -165,10 +161,6 @@ p.raw-text-link>a {
 
 .br-100 {
     border-radius: 100%;
-}
-
-.db {
-    display: block;
 }
 
 .dib {

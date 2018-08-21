@@ -19,8 +19,7 @@
         <section class="mw7 center">
             <h2 class="f3 ph3 ph0-l">What is Feedbridge?</h2>
             <article class="lh-copy">
-                <p>Feedbridge is a tool that generates RSS / Atom or JSON feeds for websites that don't have one or only offer
-                    one without the full content. Feedbridge is plugin-based, so for a website to be available here a plugin
+                <p>Feedbridge is a tool that generates RSS, Atom or JSON feeds for websites that don't have one or only offer an incomplete one. Feedbridge is plugin-based, so for a website to be available here a plugin
                     to scrape the source needs to be built and deployed. It's built by
                     <a href="https://twitter.com/tehwey" class="link dim white underline">me</a> mostly for myself but I'm happy to build more plugins or merge yours.</p>
                 <p>Everyone can contribute by creating a plugin (Written in Go) and opening a Pull Request on
@@ -28,12 +27,13 @@
             </article>
         </section>
         <section class="mw7 center">
+        {{ $feed := . }}
             {{ range . }}
-            <h2 class="f3 ph3 ph0-l">Available Feeds ()</h2>
+            <h2 class="f3 ph3 ph0-l">Available Feeds ({{ len $feed }})</h2>
             <article class="bt bb" v-for="plugin in plugins">
                 <div class="flex flex-column flex-row-ns db pv4 ph3 ph0-l">
                     <div class="pr3-ns mb4 mb0-ns w-100 w-40-ns">
-                        <img src="{{ .Image }}" alt="Website source screenshot">
+                        <img src="{{ .Image }}" class="db" alt="Website source screenshot">
                     </div>
                     <div class="w-100 w-60-ns pl3-ns">
                         <h1 class="f3 fw4 mt0 lh-title">{{ .Name }}</h1>
