@@ -7,8 +7,9 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"text/template"
 	"time"
+
+	"text/template"
 
 	"github.com/caarlos0/env"
 	"github.com/gobuffalo/packr"
@@ -79,6 +80,10 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println(templates.List())
+		fmt.Println(templates.Path)
+		fmt.Println(assets.List())
+		fmt.Println(assets.Path)
 		t, err := template.New("index.tmpl").Parse(templates.String("index.tmpl"))
 		if err != nil {
 			http.Error(w, errors.New("couldn't serve template").Error(), http.StatusInternalServerError)
