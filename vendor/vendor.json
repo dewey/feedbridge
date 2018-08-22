@@ -39,6 +39,12 @@
 			"revisionTime": "2018-08-16T15:23:45Z"
 		},
 		{
+			"checksumSHA1": "A2pvBObG7boB0BjpoUj3sBZAAsg=",
+			"path": "github.com/go-chi/render",
+			"revision": "8c8c7a43d054b536d7e18e82c4331e7258f211a2",
+			"revisionTime": "2017-12-31T23:41:54Z"
+		},
+		{
 			"checksumSHA1": "/UJOUopaUR3wpVgoq6A6pxSldPA=",
 			"path": "github.com/go-kit/kit/log",
 			"revision": "9813199613524eb386b05500880c1e26d2fc3da6",
