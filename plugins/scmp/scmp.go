@@ -41,7 +41,7 @@ func (p *plugin) Info() pm.PluginMetadata {
 		Name:          "The South China Morning Post: Infographics",
 		Description:   `Scraping the Infographics section of South China Morning Post as there's no RSS feed available. The Infographics cover various topics like Politics, Lifestyle, Science and Economy.`,
 		Author:        "Philipp",
-		AuthorURL: "https://github.com/dewey"
+		AuthorURL:     "https://github.com/dewey",
 		Image:         "https://i.imgur.com/pPVoXVh.png",
 		SourceURL:     "https://www.scmp.com/topics/infographics-asia",
 	}
@@ -151,8 +151,6 @@ func (p *plugin) listHandler(doc *goquery.Document) ([]*feeds.Item, error) {
 				p.l.Log("err", err)
 			}
 		}
-
-		fmt.Println(item)
 
 		feedItems = append(feedItems, item)
 	})
