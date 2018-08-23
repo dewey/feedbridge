@@ -10,8 +10,6 @@ import (
 	"text/template"
 	"time"
 
-	"text/template"
-
 	"github.com/caarlos0/env"
 	"github.com/gobuffalo/packr"
 	"github.com/prometheus/client_golang/prometheus"
