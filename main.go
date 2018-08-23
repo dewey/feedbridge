@@ -84,7 +84,14 @@ func main() {
 			http.Error(w, errors.New("couldn't serve template").Error(), http.StatusInternalServerError)
 			return
 		}
-		if err := t.Execute(w, apiService.ListFeeds()); err != nil {
+		data := struct {
+			Feeds           []plugin.PluginMetadata
+			RefreshInterval int
+		}{
+			Feeds:           apiService.ListFeeds(),
+			RefreshInterval: config.RefreshInterval,
+		}
+		if err := t.Execute(w, data); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
