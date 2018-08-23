@@ -80,10 +80,6 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println(templates.List())
-		fmt.Println(templates.Path)
-		fmt.Println(assets.List())
-		fmt.Println(assets.Path)
 		t, err := template.New("index.tmpl").Parse(templates.String("index.tmpl"))
 		if err != nil {
 			http.Error(w, errors.New("couldn't serve template").Error(), http.StatusInternalServerError)
@@ -100,9 +96,11 @@ func main() {
 
 	// TODO(dewey): Switch to promhttp middleware instead of this deprecated one
 	r.Mount("/feed", prometheus.InstrumentHandler("feed", api.NewHandler(*apiService)))
+
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("nothing to see here"))
 	})
+
 	l.Log("msg", fmt.Sprintf("feedbridge listening on %s:%d", config.APIHostname, config.Port))
 	err = http.ListenAndServe(fmt.Sprintf(":%d", config.Port), r)
 	if err != nil {

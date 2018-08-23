@@ -5,8 +5,9 @@ RUN apk update && \
     apk upgrade && \
     apk add git
 RUN go get -u github.com/gobuffalo/packr/... && \
-    packr build -v -o /feedbridge ./main.go
-
+    cd $GOPATH/src/github.com/dewey/feedbridge && \    
+    packr && \
+    go build -v -o /feedbridge
 FROM alpine:latest  
 RUN apk --no-cache add ca-certificates
 WORKDIR /root/
