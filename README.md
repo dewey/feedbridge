@@ -4,6 +4,7 @@
 
 [![Build Status](https://travis-ci.com/dewey/feedbridge.svg?branch=master)](https://travis-ci.com/dewey/feedbridge)
 [![Go Report Card](https://goreportcard.com/badge/github.com/dewey/feedbridge)](https://goreportcard.com/report/github.com/dewey/feedbridge)
+[![Maintainability](https://api.codeclimate.com/v1/badges/50d72195e5d1f42d21b1/maintainability)](https://codeclimate.com/github/dewey/feedbridge/maintainability)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/dewey/feedbridge/LICENSE)
 [![Badges](https://img.shields.io/badge/badges-all%20of%20them-brightgreen.svg)](https://github.com/dewey/feedbridge)
 

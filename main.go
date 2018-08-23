@@ -26,15 +26,16 @@ import (
 	cache "github.com/patrickmn/go-cache"
 )
 
+var config struct {
+	RefreshInterval   int    `env:"REFRESH_INTERVAL" envDefault:"15"`
+	CacheExpiration   int    `env:"CACHE_EXPIRATION" envDefault:"30"`
+	CacheExpiredPurge int    `env:"CACHE_EXPIRED_PURGE" envDefault:"60"`
+	Environment       string `env:"ENVIRONMENT" envDefault:"develop"`
+	Port              int    `env:"PORT" envDefault:"8080"`
+	APIHostname       string `env:"API_HOSTNAME" envDefault:"http://localhost"`
+}
+
 func main() {
-	var config struct {
-		RefreshInterval   int    `env:"REFRESH_INTERVAL" envDefault:"15"`
-		CacheExpiration   int    `env:"CACHE_EXPIRATION" envDefault:"30"`
-		CacheExpiredPurge int    `env:"CACHE_EXPIRED_PURGE" envDefault:"60"`
-		Environment       string `env:"ENVIRONMENT" envDefault:"develop"`
-		Port              int    `env:"PORT" envDefault:"8080"`
-		APIHostname       string `env:"API_HOSTNAME" envDefault:"http://localhost"`
-	}
 	err := env.Parse(&config)
 	if err != nil {
 		panic(err)
