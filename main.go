@@ -57,12 +57,12 @@ func main() {
 
 	t := &http.Transport{
 		Dial: (&net.Dialer{
-			Timeout: 5 * time.Second,
+			Timeout: 10 * time.Second,
 		}).Dial,
-		TLSHandshakeTimeout: 5 * time.Second,
+		TLSHandshakeTimeout: 10 * time.Second,
 	}
 	c := &http.Client{
-		Timeout:   time.Second * 10,
+		Timeout:   time.Second * 15,
 		Transport: t,
 	}
 

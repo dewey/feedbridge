@@ -3,6 +3,8 @@ package scmp
 import (
 	"fmt"
 	"net/http"
+	"net/url"
+	"strconv"
 	"time"
 
 	pm "github.com/dewey/feedbridge/plugin"
@@ -72,33 +74,33 @@ func (p *plugin) Run() (*feeds.Feed, error) {
 		feedItems = append(feedItems, items...)
 
 		// Create tasks for pagination
-		// var subTask []scrape.Task
-		// for i := 1; i < 5; i++ {
-		// 	u, err := url.Parse(r.URL)
-		// 	if err != nil {
-		// 		p.l.Log("err", err)
-		// 		continue
-		// 	}
-		// 	q := u.Query()
-		// 	q.Add("page", strconv.Itoa(i))
-		// 	u.RawQuery = q.Encode()
-		// 	subTask = append(subTask, scrape.Task{
-		// 		URL: u.String(),
-		// 	})
-		// }
+		var subTask []scrape.Task
+		for i := 1; i < 5; i++ {
+			u, err := url.Parse(r.URL)
+			if err != nil {
+				p.l.Log("err", err)
+				continue
+			}
+			q := u.Query()
+			q.Add("page", strconv.Itoa(i))
+			u.RawQuery = q.Encode()
+			subTask = append(subTask, scrape.Task{
+				URL: u.String(),
+			})
+		}
 
 		// Get all items from other pages
-		// result, err := scrape.URLToDocument(p.c, subTask)
-		// if err != nil {
-		// 	return nil, err
-		// }
-		// for _, r := range result {
-		// 	items, err := p.listHandler(&r.Document)
-		// 	if err != nil {
-		// 		p.l.Log("err", err)
-		// 	}
-		// 	feedItems = append(feedItems, items...)
-		// }
+		result, err := scrape.URLToDocument(p.c, subTask)
+		if err != nil {
+			return nil, err
+		}
+		for _, r := range result {
+			items, err := p.listHandler(&r.Document)
+			if err != nil {
+				p.l.Log("err", err)
+			}
+			feedItems = append(feedItems, items...)
+		}
 	}
 	p.f.Items = feedItems
 	return p.f, nil
