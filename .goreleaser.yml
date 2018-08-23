@@ -10,6 +10,8 @@ archive:
     amd64: x86_64
 checksum:
   name_template: 'checksums.txt'
+sign:
+   artifacts: checksum
 snapshot:
   name_template: "{{ .Tag }}-next"
 changelog:
