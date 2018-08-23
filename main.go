@@ -32,7 +32,6 @@ var config struct {
 	CacheExpiredPurge int    `env:"CACHE_EXPIRED_PURGE" envDefault:"60"`
 	Environment       string `env:"ENVIRONMENT" envDefault:"develop"`
 	Port              int    `env:"PORT" envDefault:"8080"`
-	APIHostname       string `env:"API_HOSTNAME" envDefault:"http://localhost"`
 }
 
 func main() {
@@ -108,7 +107,7 @@ func main() {
 		w.Write([]byte("nothing to see here"))
 	})
 
-	l.Log("msg", fmt.Sprintf("feedbridge listening on %s:%d", config.APIHostname, config.Port))
+	l.Log("msg", fmt.Sprintf("feedbridge listening on http://localhost:%d", config.Port))
 	err = http.ListenAndServe(fmt.Sprintf(":%d", config.Port), r)
 	if err != nil {
 		panic(err)
