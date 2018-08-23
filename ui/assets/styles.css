@@ -171,11 +171,6 @@ p.raw-text-link>a {
     height: 2rem;
 }
 
-.link {
-    text-decoration: none;
-    transition: color .15s ease-in;
-    color: white;
-}
 
 .link:link,
 .link:visited {
