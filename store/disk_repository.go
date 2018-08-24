@@ -6,12 +6,12 @@ import (
 	"github.com/peterbourgon/diskv"
 )
 
-// DiskRepo holds a representation of a persistant store backend
+// DiskRepo holds a representation of a persistent store backend
 type DiskRepo struct {
 	d *diskv.Diskv
 }
 
-// NewDiskRepository returns a newly persistant store repository
+// NewDiskRepository returns a newly persistent store repository
 func NewDiskRepository(path string) (*DiskRepo, error) {
 	d := diskv.New(diskv.Options{
 		BasePath:     path,
