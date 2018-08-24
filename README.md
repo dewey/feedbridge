@@ -36,10 +36,23 @@ Returns the exported Prometheus metrics.
 The following environment variables are available, they all have sensible defaults and don't need to be set explicity.
 
 - `REFRESH_INTERVAL`: The interval in which feeds get rescraped in minutes (Default: 15)
-- `CACHE_EXPIRATION`: The expiration time of the cache in minutes (Default: 30)
-- `CACHE_EXPIRED_PURGE`: The interval at which the expired cache elements will be purged in minutes (Default: 60)
 - `ENVIRONMENT`: Environment can be `prod` or `develop`. `develop` sets the loglevel to `info` (Default: `develop`)
 - `PORT`: Port that feedbridge is running on (Default: `8080`)
+
+There are two available storage backends right now. An in-memory and a disk backed implementation. Depending on which one you choose
+there are additional options you can set.
+
+- `STORAGE_BACKEND`: Set to `memory` to keep everything in-memory or `persistent` to persist the cache to disk. (Default: `memory`)
+
+**In Memory**
+
+- `CACHE_EXPIRATION`: The expiration time of the cache in minutes (Default: 30)
+- `CACHE_EXPIRED_PURGE`: The interval at which the expired cache elements will be purged in minutes (Default: 60)
+
+**Persistent**
+
+- `STORAGE_PATH`: Set the storage location of the cache on disk. (Default: `./feedbridge-cache`)
+
 
 ### Run with Docker
 
