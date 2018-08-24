@@ -21,14 +21,14 @@ import (
 type Runner struct {
 	l                    log.Logger
 	Client               *http.Client
-	PluginRepository     *plugin.MemRepo
-	StorageRepository    *store.MemRepo
+	PluginRepository     plugin.Repository
+	StorageRepository    store.StorageRepository
 	CheckIntervalMinutes int
 	ticker               *time.Ticker
 }
 
 // NewRunner initializes a new runner to run plugins
-func NewRunner(l log.Logger, pluginRepo *plugin.MemRepo, storageRepo *store.MemRepo, checkIntervalMinutes int) *Runner {
+func NewRunner(l log.Logger, pluginRepo plugin.Repository, storageRepo store.StorageRepository, checkIntervalMinutes int) *Runner {
 	return &Runner{
 		l:                    l,
 		PluginRepository:     pluginRepo,

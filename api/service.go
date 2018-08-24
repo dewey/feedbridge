@@ -20,12 +20,12 @@ type Service interface {
 
 type service struct {
 	l                 log.Logger
-	storageRepository *store.MemRepo
-	pluginRepository  *plugin.MemRepo
+	storageRepository store.StorageRepository
+	pluginRepository  plugin.Repository
 }
 
 // NewService initializes a new API service
-func NewService(l log.Logger, sr *store.MemRepo, pr *plugin.MemRepo) *service {
+func NewService(l log.Logger, sr store.StorageRepository, pr plugin.Repository) *service {
 	return &service{
 		l:                 l,
 		storageRepository: sr,
