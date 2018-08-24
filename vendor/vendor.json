@@ -93,6 +93,12 @@
 			"revisionTime": "2018-08-21T05:17:52Z"
 		},
 		{
+			"checksumSHA1": "1wGa+UXlNg3+GI6pKlOCOL2dbt8=",
+			"path": "github.com/google/btree",
+			"revision": "4030bb1f1f0c35b30ca7009e9ebd06849dd45306",
+			"revisionTime": "2018-08-13T15:31:12Z"
+		},
+		{
 			"checksumSHA1": "B0dyaTc5x4eV+kJfAyr+kQogxcY=",
 			"path": "github.com/gorilla/feeds",
 			"revision": "762f7414cb4b615000daa195dfaf09b5aa503590",
@@ -115,6 +121,12 @@
 			"path": "github.com/patrickmn/go-cache",
 			"revision": "5633e0862627c011927fa39556acae8b1f1df58a",
 			"revisionTime": "2018-08-15T05:31:27Z"
+		},
+		{
+			"checksumSHA1": "1DFgH7ZOfpUqg0Jsf2719jVgrew=",
+			"path": "github.com/peterbourgon/diskv",
+			"revision": "0646ccaebea1ed1539efcab30cae44019090093f",
+			"revisionTime": "2018-03-12T05:41:25Z"
 		},
 		{
 			"checksumSHA1": "ljd3FhYRJ91cLZz3wsH9BQQ2JbA=",
