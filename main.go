@@ -23,13 +23,13 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
-	cache "github.com/patrickmn/go-cache"
 )
 
 var config struct {
 	RefreshInterval   int    `env:"REFRESH_INTERVAL" envDefault:"15"`
 	CacheExpiration   int    `env:"CACHE_EXPIRATION" envDefault:"30"`
 	CacheExpiredPurge int    `env:"CACHE_EXPIRED_PURGE" envDefault:"60"`
+	StorageBackend    string `env:"STORAGE_BACKEND" envDefault:"memory"`
 	Environment       string `env:"ENVIRONMENT" envDefault:"develop"`
 	Port              int    `env:"PORT" envDefault:"8080"`
 }
@@ -49,10 +49,20 @@ func main() {
 	}
 	l = log.With(l, "ts", log.DefaultTimestampUTC, "caller", log.DefaultCaller)
 
-	cache := cache.New(time.Duration(config.CacheExpiration)*time.Minute, time.Duration(config.CacheExpiredPurge)*time.Minute)
-	storageRepo, err := store.NewMemRepository(cache)
-	if err != nil {
-		return
+	var storageRepo store.StorageRepository
+	switch config.StorageBackend {
+	case "memory":
+		memory, err := store.NewMemRepository(config.CacheExpiration, config.CacheExpiredPurge)
+		if err != nil {
+			return
+		}
+		storageRepo = memory
+	case "persistant":
+		disk, err := store.NewDiskRepository("feedbridge-cache")
+		if err != nil {
+			return
+		}
+		storageRepo = disk
 	}
 
 	t := &http.Transport{

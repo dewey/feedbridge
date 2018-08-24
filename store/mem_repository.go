@@ -2,6 +2,7 @@ package store
 
 import (
 	"fmt"
+	"time"
 
 	cache "github.com/patrickmn/go-cache"
 )
@@ -12,15 +13,16 @@ type MemRepo struct {
 }
 
 // NewMemRepository returns a newly initialized in-memory repository
-func NewMemRepository(c *cache.Cache) (*MemRepo, error) {
+func NewMemRepository(expiration, expiredPurge int) (*MemRepo, error) {
 	return &MemRepo{
-		c: c,
+		c: cache.New(time.Duration(expiration)*time.Minute, time.Duration(expiredPurge)*time.Minute),
 	}, nil
 }
 
 // Save stores a new value for a key in the k/v store
-func (r *MemRepo) Save(key string, value string) {
+func (r *MemRepo) Save(key string, value string) error {
 	r.c.Set(key, value, cache.DefaultExpiration)
+	return nil
 }
 
 // Get retrieves a value from the k/v store
