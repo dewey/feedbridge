@@ -16,22 +16,26 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"github.com/dewey/feedbridge/api"
+	"github.com/dewey/feedbridge/config"
 	"github.com/dewey/feedbridge/plugin"
 	"github.com/dewey/feedbridge/plugins/scmp"
 	"github.com/dewey/feedbridge/runner"
+
+	"github.com/dewey/feedbridge/store"
 	"github.com/go-chi/chi"
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
 )
 
 func main() {
-	err := env.Parse(&config.Config)
+	var cfg config.Config
+	err := env.Parse(&cfg)
 	if err != nil {
 		panic(err)
 	}
 
 	l := log.NewLogfmtLogger(log.NewSyncWriter(os.Stderr))
-	switch strings.ToLower(config.Environment) {
+	switch strings.ToLower(cfg.Environment) {
 	case "develop":
 		l = level.NewFilter(l, level.AllowInfo())
 	case "prod":
@@ -53,7 +57,12 @@ func main() {
 	pluginRepo := plugin.NewMemRepo()
 	pluginRepo.Install(scmp.NewPlugin(l, c))
 
-	runner := runner.NewRunner(l, pluginRepo, storageRepo, config.RefreshInterval)
+	storageRepo, err := store.NewStoreBackend(cfg)
+	if err != nil {
+		return
+	}
+
+	runner := runner.NewRunner(l, pluginRepo, storageRepo, cfg.RefreshInterval)
 	go runner.Start()
 
 	apiService := api.NewService(l, storageRepo, pluginRepo)
@@ -73,7 +82,7 @@ func main() {
 			RefreshInterval int
 		}{
 			Feeds:           apiService.ListFeeds(),
-			RefreshInterval: config.RefreshInterval,
+			RefreshInterval: cfg.RefreshInterval,
 		}
 		if err := t.Execute(w, data); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -91,8 +100,8 @@ func main() {
 		w.Write([]byte("nothing to see here"))
 	})
 
-	l.Log("msg", fmt.Sprintf("feedbridge listening on http://localhost:%d", config.Port))
-	err = http.ListenAndServe(fmt.Sprintf(":%d", config.Port), r)
+	l.Log("msg", fmt.Sprintf("feedbridge listening on http://localhost:%d", cfg.Port))
+	err = http.ListenAndServe(fmt.Sprintf(":%d", cfg.Port), r)
 	if err != nil {
 		panic(err)
 	}
