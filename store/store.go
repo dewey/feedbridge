@@ -12,17 +12,17 @@ type StorageRepository interface {
 }
 
 // NewStoreBackend is a factory to return a store implementation based on the config choosen
-func NewStoreBackend(cfg config.Config) (*StorageRepository, error) {
-	var storageRepo *StorageRepository
+func NewStoreBackend(cfg config.Config) (StorageRepository, error) {
+	var storageRepo StorageRepository
 	switch cfg.StorageBackend {
 	case "memory":
-		memory, err := NewMemRepository(config.CacheExpiration, config.CacheExpiredPurge)
+		memory, err := NewMemRepository(cfg.CacheExpiration, cfg.CacheExpiredPurge)
 		if err != nil {
 			return nil, err
 		}
 		storageRepo = memory
 	case "persistent":
-		disk, err := NewDiskRepository(config.StoragePath)
+		disk, err := NewDiskRepository(cfg.StoragePath)
 		if err != nil {
 			return nil, err
 		}
