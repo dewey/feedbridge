@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/0j5LG0t.png" alt="feedbridge gopher" width="100">
 
-# feedbridge
+# Feedbridge
 
 [![Build Status](https://travis-ci.com/dewey/feedbridge.svg?branch=master)](https://travis-ci.com/dewey/feedbridge)
 [![GoDoc](https://godoc.org/github.com/dewey/feedbridge?status.svg)](https://godoc.org/github.com/dewey/feedbridge) 
@@ -9,7 +9,7 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/dewey/feedbridge/LICENSE)
 [![Badges](https://img.shields.io/badge/badges-all%20of%20them-brightgreen.svg)](https://github.com/dewey/feedbridge)
 
-Is a tool to provide RSS feeds for sites that don't have one, or only offer a feed of headlines. For each site—or kind of site—you want to generate a feed for you'll have to implement a plugin with a custom scraping strategy. feedbridge doesn't persist old items so if it's not on the site you are scraping any more it won't be in the feed. Pretty similar to how most feeds these days work that only have the latest items in there. It publishes Atom, RSS 2.0, and JSON Feed Version 1 conform feeds.
+Is a tool (Hosted version / Demo: [feedbridge.notmyhostna.me](https://feedbridge.notmyhostna.me)) to provide RSS feeds for sites that don't have one, or only offer a feed of headlines. For each site—or kind of site—you want to generate a feed for you'll have to implement a plugin with a custom scraping strategy. feedbridge doesn't persist old items so if it's not on the site you are scraping any more it won't be in the feed. Pretty similar to how most feeds these days work that only have the latest items in there. It publishes Atom, RSS 2.0, and JSON Feed Version 1 conform feeds.
 
 There are a bunch of web apps doing something similar, some of them you can even drag and drop selectors to create a feed. That didn't work well for the site I was trying it for so I decided to built this. (Also it was fun doing so).
 
