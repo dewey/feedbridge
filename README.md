@@ -9,7 +9,7 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/dewey/feedbridge/LICENSE)
 [![Badges](https://img.shields.io/badge/badges-all%20of%20them-brightgreen.svg)](https://github.com/dewey/feedbridge)
 
-Is a tool (Hosted version / Demo: [feedbridge.notmyhostna.me](https://feedbridge.notmyhostna.me)) to provide RSS feeds for sites that don't have one, or only offer a feed of headlines. For each site—or kind of site—you want to generate a feed for you'll have to implement a plugin with a custom scraping strategy. feedbridge doesn't persist old items so if it's not on the site you are scraping any more it won't be in the feed. Pretty similar to how most feeds these days work that only have the latest items in there. It publishes Atom, RSS 2.0, and JSON Feed Version 1 conform feeds.
+Is a tool (Hosted version / Demo: [feedbridge.notmyhostna.me](https://feedbridge.notmyhostna.me)) to provide RSS feeds for sites that don't have one, or only offer a feed of headlines. For each site—or kind of site—you want to generate a feed for you'll have to implement a plugin with a custom scraping strategy. Feedbridge doesn't persist old items so if it's not on the site you are scraping any more it won't be in the feed. Pretty similar to how most feeds these days work that only have the latest items in there. It publishes Atom, RSS 2.0, and JSON Feed Version 1 conform feeds.
 
 There are a bunch of web apps doing something similar, some of them you can even drag and drop selectors to create a feed. That didn't work well for the site I was trying it for so I decided to built this. (Also it was fun doing so).
 
@@ -38,7 +38,7 @@ The following environment variables are available, they all have sensible defaul
 
 - `REFRESH_INTERVAL`: The interval in which feeds get rescraped in minutes (Default: 15)
 - `ENVIRONMENT`: Environment can be `prod` or `develop`. `develop` sets the loglevel to `info` (Default: `develop`)
-- `PORT`: Port that feedbridge is running on (Default: `8080`)
+- `PORT`: Port that Feedbridge is running on (Default: `8080`)
 
 There are two available storage backends right now. An in-memory and a disk backed implementation. Depending on which one you choose
 there are additional options you can set.
@@ -52,7 +52,7 @@ there are additional options you can set.
 
 **Persistent**
 
-- `STORAGE_PATH`: Set the storage location of the cache on disk. (Default: `./feedbridge-cache`)
+- `STORAGE_PATH`: Set the storage location of the cache on disk. (Default: `./feedbridge-data`)
 
 
 ### Run with Docker
