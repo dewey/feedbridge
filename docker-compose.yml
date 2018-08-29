@@ -9,3 +9,4 @@ services:
       - REFRESH_INTERVAL=15
       - CACHE_EXPIRATION=30
       - CACHE_EXPIRED_PURGE=60
+      - STORAGE_PATH=/feedbridge-data
