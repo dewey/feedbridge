@@ -57,7 +57,8 @@ there are additional options you can set.
 
 ### Run with Docker
 
-You can change all these options in the included `docker-compose.yml` file and use `docker-compose -f docker-compose.yml up -d` to run the project.
+You can change all these options in the included docker-compose files and use `docker-compose -f docker-compose.yml up -d` to run the project. There are
+two sample docker compose files that already have the settings for the two available backends set.
 
 ### Monitoring
 
