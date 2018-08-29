@@ -7,6 +7,7 @@ services:
     environment:
       - ENVIRONMENT=prod
       - REFRESH_INTERVAL=15
-      - CACHE_EXPIRATION=30
-      - CACHE_EXPIRED_PURGE=60
+      - STORAGE_BACKEND=persistent
       - STORAGE_PATH=/feedbridge-data
+    volumes:
+     - /home/dewey/services/feedbridge/feedbridge-data:/feedbridge-data
