@@ -124,22 +124,27 @@ func (p *plugin) listHandler(doc *goquery.Document) ([]*feeds.Item, error) {
 		ds := s.Find("div.content-wrapper > div.caption-wrapper > h3.node-title > a")
 		item.Title = ds.Text()
 
-		is := s.Find("div.background-image > a > img")
-		val, exists = is.Attr("data-original")
-		if exists {
-			item.Description = fmt.Sprintf(`<img src="%s" width="300px">`, val)
-		}
-
+		var description string
 		ts := s.Find("span.rdf-meta")
 		val, exists = ts.Attr("property")
 		if exists {
 			if val == "dc:title" {
-				val, exists = ts.Attr("content")
+				ct, exists := ts.Attr("content")
 				if exists {
-					item.Description = fmt.Sprintf(`%s<p>%s`, item.Description, val)
+					description = ct
 				}
 			}
 		}
+
+		var image string
+		is := s.Find("div.background-image > a > img")
+		val, exists = is.Attr("data-original")
+		if exists {
+			image = fmt.Sprintf(`<img src="%s" height="300px" alt="Image for the article">`, val)
+		}
+
+		item.Description = fmt.Sprintf(`%s<p>%s`, description, image)
+
 		times := s.Find("time.updated")
 		val, exists = times.Attr("content")
 		if exists {
