@@ -49,7 +49,6 @@ func (p *plugin) Info() pm.PluginMetadata {
 	}
 }
 
-// Run runs the main checker function of the plugin
 func (p *plugin) Run() (*feeds.Feed, error) {
 	it := []string{
 		"https://www.scmp.com/topics/infographics-asia",

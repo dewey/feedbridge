@@ -98,9 +98,19 @@ func (r *Runner) runPlugin(cp plugin.Plugin) (scrape.Statistic, error) {
 	if err != nil {
 		return scrape.Statistic{}, err
 	}
-	f.Sort(func(a, b *feeds.Item) bool {
-		return a.Created.After(b.Created)
-	})
+
+	var hasCreatedTimestamp bool
+	for _, fi := range f.Items {
+		if fi.Created.IsZero() {
+			hasCreatedTimestamp = false
+		}
+	}
+	if hasCreatedTimestamp {
+		f.Sort(func(a, b *feeds.Item) bool {
+			return a.Created.After(b.Created)
+		})
+	}
+
 	rss, err := f.ToRss()
 	if err != nil {
 		return scrape.Statistic{}, err

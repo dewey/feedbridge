@@ -18,6 +18,7 @@ import (
 	"github.com/dewey/feedbridge/api"
 	"github.com/dewey/feedbridge/config"
 	"github.com/dewey/feedbridge/plugin"
+	"github.com/dewey/feedbridge/plugins/roadsandkingdoms"
 	"github.com/dewey/feedbridge/plugins/scmp"
 	"github.com/dewey/feedbridge/runner"
 
@@ -56,6 +57,7 @@ func main() {
 
 	pluginRepo := plugin.NewMemRepo()
 	pluginRepo.Install(scmp.NewPlugin(l, c))
+	pluginRepo.Install(roadsandkingdoms.NewPlugin(l, c))
 
 	storageRepo, err := store.NewStoreBackend(cfg)
 	if err != nil {
