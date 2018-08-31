@@ -65,9 +65,12 @@ func main() {
 	}
 
 	runner := runner.NewRunner(l, pluginRepo, storageRepo, cfg.RefreshInterval)
-	go runner.Start()
+	// No scheduled scrapes running in development, use the refresh route to test plugins
+	if cfg.Environment != "develop" {
+		go runner.Start()
+	}
 
-	apiService := api.NewService(l, storageRepo, pluginRepo)
+	apiService := api.NewService(l, cfg, storageRepo, pluginRepo, runner)
 
 	templates := packr.NewBox("./ui/templates")
 	assets := packr.NewBox("./ui/assets")

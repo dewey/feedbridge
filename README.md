@@ -26,9 +26,17 @@ Returns the feed based on a given plugin and output format. That's the URL you s
 - `plugin`: The name of the plugin as returned by `String()`
 - `format`: The format the feed should be returned in, can be `rss`, `atom` or `json`. By default it's RSS.
 
+**POST /feed/{plugin}/refresh** (_Authentication required_)
+
+Route to trigger a refresh for a given plugins, this runs a single scrape of the given plugin. 
+
 **GET /metrics**
 
 Returns the exported Prometheus metrics.
+
+**API Authentication**
+
+Is done through a query parameter (`auth_token`), it's configured via the `API_TOKEN` environment variable.
 
 ## Configuration and Operation
 
@@ -37,6 +45,7 @@ Returns the exported Prometheus metrics.
 The following environment variables are available, they all have sensible defaults and don't need to be set explicity.
 
 - `REFRESH_INTERVAL`: The interval in which feeds get rescraped in minutes (Default: 15)
+- `API_TOKEN`: A user defined token that is used to protect sensitive API routes (Default: `changeme`)
 - `ENVIRONMENT`: Environment can be `prod` or `develop`. `develop` sets the loglevel to `info` (Default: `develop`)
 - `PORT`: Port that Feedbridge is running on (Default: `8080`)
 

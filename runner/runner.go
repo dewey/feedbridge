@@ -27,6 +27,11 @@ type Runner struct {
 	ticker               *time.Ticker
 }
 
+// scrapeConfig contains information about a scrape
+type scrapeConfig struct {
+	Type string
+}
+
 // NewRunner initializes a new runner to run plugins
 func NewRunner(l log.Logger, pluginRepo plugin.Repository, storageRepo store.StorageRepository, checkIntervalMinutes int) *Runner {
 	return &Runner{
@@ -76,8 +81,9 @@ func (r *Runner) Start() {
 			go func(cp plugin.Plugin) {
 				defer wg.Done()
 				start := time.Now()
-				level.Info(log.With(r.l, "plugin", cp.Info().TechnicalName)).Log("msg", "scrape started")
-				ss, err := r.runPlugin(cp)
+				ss, err := r.runPlugin(cp, scrapeConfig{
+					Type: "full",
+				})
 				if err != nil {
 					level.Error(r.l).Log("err", err)
 					return
@@ -86,14 +92,26 @@ func (r *Runner) Start() {
 				duration := time.Since(start)
 				scrapesDurationHistogram.WithLabelValues(cp.Info().TechnicalName).Observe(duration.Seconds())
 				pluginItemsScraped.WithLabelValues(cp.Info().TechnicalName).Set(float64(ss.Items))
-				level.Info(log.With(r.l, "plugin", cp.Info().TechnicalName)).Log("msg", "scrape finished", "feed_items", ss.Items)
 			}(cp)
 		}
 		wg.Wait()
 	}
 }
 
-func (r *Runner) runPlugin(cp plugin.Plugin) (scrape.Statistic, error) {
+// StartSingle runs a single plugin once
+func (r *Runner) StartSingle(cp plugin.Plugin) error {
+	cfg := scrapeConfig{
+		Type: "single",
+	}
+	_, err := r.runPlugin(cp, cfg)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *Runner) runPlugin(cp plugin.Plugin, cfg scrapeConfig) (scrape.Statistic, error) {
+	level.Info(log.With(r.l, "plugin", cp.Info().TechnicalName, "scrape_type", cfg.Type)).Log("msg", "scrape started")
 	f, err := cp.Run()
 	if err != nil {
 		return scrape.Statistic{}, err
@@ -128,5 +146,6 @@ func (r *Runner) runPlugin(cp plugin.Plugin) (scrape.Statistic, error) {
 		return scrape.Statistic{}, err
 	}
 	r.StorageRepository.Save(fmt.Sprintf("json_%s", cp.Info().TechnicalName), json)
+	level.Info(log.With(r.l, "plugin", cp.Info().TechnicalName, "scrape_type", cfg.Type)).Log("msg", "scrape finished", "feed_items", len(f.Items))
 	return scrape.Statistic{Items: len(f.Items)}, nil
 }
