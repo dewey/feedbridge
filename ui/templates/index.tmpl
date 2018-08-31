@@ -39,9 +39,9 @@
             </article>
         </section>
         <section class="mw7 center">
-            {{ $feed := .Feeds }} {{ range .Feeds }}
             <h2 class="f3 ph3 ph0-l">Available Feeds ({{ len $feed }})</h2>
-            <article class="bt bb" v-for="plugin in plugins">
+            {{ $feed := .Feeds }} {{ range .Feeds }}
+            <article class="bt" v-for="plugin in plugins">
                 <div class="flex flex-column flex-row-ns db pv4 ph3 ph0-l">
                     <div class="pr3-ns mb4 mb0-ns w-100 w-40-ns">
                         <img src="{{ .Image }}" class="db" alt="Website source screenshot">

@@ -36,7 +36,7 @@ func (p *plugin) Info() pm.PluginMetadata {
 	return pm.PluginMetadata{
 		TechnicalName: "roadsandkingdoms",
 		Name:          p.f.Title,
-		Description:   "Proving a full content feed not just snippets.",
+		Description:   "Providing a full content feed not just the headlines.",
 		Author:        "Philipp",
 		AuthorURL:     "https://github.com/dewey",
 		Image:         "https://i.imgur.com/ABzvg51.png",
