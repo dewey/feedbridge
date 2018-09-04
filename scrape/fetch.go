@@ -43,7 +43,8 @@ func URLToDocument(c *http.Client, tasks []Task) ([]TaskDocumentResponse, error)
 		if err != nil {
 			return nil, err
 		}
-		defer resp.Body.Close()
+		resp.Body.Close()
+
 		doc, err := goquery.NewDocumentFromReader(resp.Body)
 		if err != nil {
 			return nil, err
