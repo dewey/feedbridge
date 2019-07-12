@@ -1,7 +1,6 @@
 package racefansnet
 
 import (
-	"fmt"
 	"net/http"
 
 	pm "github.com/dewey/feedbridge/plugin"
@@ -38,7 +37,7 @@ func (p *plugin) Info() pm.PluginMetadata {
 		Description:   "Providing a working feed, WP feed is broken.",
 		Author:        "Philipp",
 		AuthorURL:     "https://github.com/dewey",
-		Image:         "https://i.imgur.com/ABzvg51.png",
+		Image:         "https://i.imgur.com/xYTKND4.png",
 		SourceURL:     "https://www.racefans.net",
 	}
 }
@@ -48,6 +47,7 @@ func (p *plugin) Run() (*feeds.Feed, error) {
 	if err != nil {
 		return nil, err
 	}
+	// If these headers are not set the feed doesn't load properly, thanks to Wordpress probably
 	req.Header.Set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:67.0) Gecko/20100101 Firefox/67.0")
 	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
 	req.Header.Set("Accept-Language", "en-US,en;q=0.5")
@@ -62,44 +62,28 @@ func (p *plugin) Run() (*feeds.Feed, error) {
 		return nil, err
 	}
 
-	// var feedItems []*feeds.Item
+	var feedItems []*feeds.Item
 	for _, fi := range feed.Items {
-		fmt.Println("fi", fi.Title)
-		// resp, err := p.c.Get(fi.Link)
-		// if err != nil {
-		// 	continue
-		// }
-		// defer resp.Body.Close()
-		// b, err := ioutil.ReadAll(resp.Body)
-		// if err != nil {
-		// 	continue
-		// }
-		// doc, err := readability.NewDocument(string(b))
-		// if err != nil {
-		// 	continue
-		// }
-
-		// content := doc.Content()
-		// item := &feeds.Item{
-		// 	Author: &feeds.Author{
-		// 		Name:  fi.Author.Name,
-		// 		Email: fi.Author.Email,
-		// 	},
-		// 	Title: fi.Title,
-		// 	Link: &feeds.Link{
-		// 		Href: fi.Link,
-		// 	},
-		// 	Id:          fi.GUID,
-		// 	Description: content,
-		// }
-		// if fi.PublishedParsed != nil {
-		// 	item.Created = *fi.PublishedParsed
-		// }
-		// if fi.UpdatedParsed != nil {
-		// 	item.Updated = *fi.UpdatedParsed
-		// }
-		// feedItems = append(feedItems, item)
+		item := &feeds.Item{
+			Author: &feeds.Author{
+				Name:  fi.Author.Name,
+				Email: fi.Author.Email,
+			},
+			Title: fi.Title,
+			Link: &feeds.Link{
+				Href: fi.Link,
+			},
+			Id:          fi.GUID,
+			Description: fi.Description,
+		}
+		if fi.PublishedParsed != nil {
+			item.Created = *fi.PublishedParsed
+		}
+		if fi.UpdatedParsed != nil {
+			item.Updated = *fi.UpdatedParsed
+		}
+		feedItems = append(feedItems, item)
 	}
-	// p.f.Items = feedItems
+	p.f.Items = feedItems
 	return p.f, nil
 }

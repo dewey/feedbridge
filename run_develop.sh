@@ -6,5 +6,5 @@ function cleanup() {
 trap cleanup EXIT
 
 # Compile Go
-GO111MODULE=on GOGC=off go build -mod=vendor -v -o feedbridge ./cmd/apifeedbridge
+GO111MODULE=on GOGC=off go build -mod=vendor -v -o feedbridge ./cmd/api/
 ./feedbridge

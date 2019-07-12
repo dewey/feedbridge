@@ -12,7 +12,6 @@ import (
 
 	"github.com/caarlos0/env"
 	"github.com/gobuffalo/packr"
-	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"github.com/dewey/feedbridge/api"
@@ -72,8 +71,8 @@ func main() {
 
 	apiService := api.NewService(l, cfg, storageRepo, pluginRepo, runner)
 
-	templates := packr.NewBox("./ui/templates")
-	assets := packr.NewBox("./ui/assets")
+	templates := packr.NewBox("../../ui/templates")
+	assets := packr.NewBox("../../ui/assets")
 
 	r := chi.NewRouter()
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
@@ -99,13 +98,13 @@ func main() {
 	r.Handle("/metrics", promhttp.Handler())
 
 	// TODO(dewey): Switch to promhttp middleware instead of this deprecated one
-	r.Mount("/feed", prometheus.InstrumentHandler("feed", api.NewHandler(*apiService)))
+	r.Mount("/feed", api.NewHandler(*apiService))
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("nothing to see here"))
 	})
 
-	l.Log("msg", fmt.Sprintf("feedbridge listening on http://localhost:%d", cfg.Port))
+	l.Log("msg", fmt.Sprintf("feedbridge listening on http://localhost:%d", cfg.Port), "env", cfg.Environment)
 	err = http.ListenAndServe(fmt.Sprintf(":%d", cfg.Port), r)
 	if err != nil {
 		panic(err)
