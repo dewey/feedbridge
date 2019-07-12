@@ -12,10 +12,6 @@ import (
 	"github.com/mmcdole/gofeed/rss"
 )
 
-// ErrFeedTypeNotDetected is returned when the detection system can not figure
-// out the Feed format
-var ErrFeedTypeNotDetected = errors.New("Failed to detect feed type")
-
 // HTTPError represents an HTTP error returned by a server.
 type HTTPError struct {
 	StatusCode int
@@ -69,8 +65,7 @@ func (f *Parser) Parse(feed io.Reader) (*Feed, error) {
 	case FeedTypeRSS:
 		return f.parseRSSFeed(r)
 	}
-
-	return nil, ErrFeedTypeNotDetected
+	return nil, errors.New("Failed to detect feed type")
 }
 
 // ParseURL fetches the contents of a given url and

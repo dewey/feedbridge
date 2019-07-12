@@ -114,6 +114,11 @@ func get(field reflect.StructField) (string, error) {
 	defaultValue := field.Tag.Get("envDefault")
 	val = getOr(key, defaultValue)
 
+	expandVar := field.Tag.Get("envExpand")
+	if strings.ToLower(expandVar) == "true" {
+		val = os.ExpandEnv(val)
+	}
+
 	if len(opts) > 0 {
 		for _, opt := range opts {
 			// The only option supported is "required".
@@ -153,6 +158,18 @@ func getOr(key, defaultValue string) string {
 }
 
 func set(field reflect.Value, refType reflect.StructField, value string, funcMap CustomParsers) error {
+	// use custom parser if configured for this type
+	parserFunc, ok := funcMap[refType.Type]
+	if ok {
+		val, err := parserFunc(value)
+		if err != nil {
+			return fmt.Errorf("Custom parser error: %v", err)
+		}
+		field.Set(reflect.ValueOf(val))
+		return nil
+	}
+
+	// fall back to built-in parsers
 	switch field.Kind() {
 	case reflect.Slice:
 		separator := refType.Tag.Get("envSeparator")
@@ -210,15 +227,7 @@ func set(field reflect.Value, refType reflect.StructField, value string, funcMap
 		}
 		field.SetUint(uintValue)
 	default:
-		parserFunc, ok := funcMap[refType.Type]
-		if !ok {
-			return handleTextUnmarshaler(field, value)
-		}
-		val, err := parserFunc(value)
-		if err != nil {
-			return fmt.Errorf("custom parser: %v", err)
-		}
-		field.Set(reflect.ValueOf(val))
+		return handleTextUnmarshaler(field, value)
 	}
 	return nil
 }

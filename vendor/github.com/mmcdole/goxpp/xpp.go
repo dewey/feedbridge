@@ -211,6 +211,7 @@ func (p *XMLPullParser) DecodeElement(v interface{}) error {
 	// to the previous StartTag event's name
 	p.resetTokenState()
 	p.Event = EndTag
+	p.Depth--
 	p.Name = name
 	p.token = nil
 	return nil

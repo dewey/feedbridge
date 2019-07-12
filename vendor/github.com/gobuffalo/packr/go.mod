@@ -1,11 +1,12 @@
 module github.com/gobuffalo/packr
 
+go 1.12
+
 require (
-	github.com/markbates/grift v1.0.1
-	github.com/pkg/errors v0.8.0
-	github.com/spf13/cobra v0.0.3
-	github.com/spf13/pflag v1.0.2 // indirect
-	github.com/stretchr/testify v1.2.2
-	golang.org/x/net v0.0.0-20180811021610-c39426892332 // indirect
-	golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f
+	github.com/gobuffalo/envy v1.7.0
+	github.com/gobuffalo/packd v0.3.0
+	github.com/gobuffalo/packr/v2 v2.5.1
+	github.com/spf13/cobra v0.0.5
+	github.com/stretchr/testify v1.3.0
+	golang.org/x/sync v0.0.0-20190423024810-112230192c58
 )
