@@ -8,11 +8,10 @@ before:
     - go generate ./...
 builds:
   - main: ./cmd/api/main.go
-  - env:
+    env:
       - CGO_ENABLED=0
     goos:
       - linux
-      - windows
       - darwin
 archives:
   - replacements:
