@@ -7,7 +7,6 @@ before:
     # you may remove this if you don't need go generate
     - go generate ./...
 builds:
-  - id: "feedbridge"
   - main: ./cmd/api/main.go
   - env:
       - CGO_ENABLED=0
